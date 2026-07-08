@@ -51,32 +51,37 @@
 <main>
 
   <!-- HERO -->
-  <section class="hero" id="hero" style="background-image:url('https://sz-gradient.ru/images/site-img/img_block1.jpg')">
+  <section class="hero" id="hero">
+    <img class="hero-bg" src="https://sz-gradient.ru/images/site-img/img_block1.jpg" alt="" aria-hidden="true">
     <div class="hero-overlay"></div>
     <div class="hero-content">
-      <h1>Жемчужина Керчи</h1>
-      <h3>Комплекс видовых квартир в городе Керчь</h3>
-      <h3>Ваш идеальный дом у черного моря</h3>
-      <div class="hero-buttons">
+      <h1 class="hero-anim" style="--d:0s">Жемчужина Керчи</h1>
+      <h3 class="hero-anim" style="--d:.12s">Комплекс видовых квартир в городе Керчь</h3>
+      <h3 class="hero-anim" style="--d:.22s">Ваш идеальный дом у черного моря</h3>
+      <div class="hero-buttons hero-anim" style="--d:.34s">
         <a href="#planirovki" class="btn btn-green btn-lg">Выбрать квартиру</a>
         <a href="#" class="btn btn-green btn-lg">Характеристики объекта</a>
       </div>
     </div>
+    <a href="#hero-next" class="scroll-cue" aria-label="Прокрутить вниз">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </a>
   </section>
+  <div id="hero-next"></div>
 
   <!-- FEATURE STRIP -->
   <section class="feature-strip" style="background-image:url('https://sz-gradient.ru/images/site-img/img_block2.jpg')">
     <div class="feature-strip-overlay"></div>
     <div class="container feature-cards">
-      <div class="feature-card">
+      <div class="feature-card reveal">
         <img src="https://sz-gradient.ru/images/site-img/p1.png" alt="">
         <p>Уникальный вид на Керченский мост</p>
       </div>
-      <div class="feature-card">
+      <div class="feature-card reveal">
         <img src="https://sz-gradient.ru/images/site-img/p2.png" alt="">
         <p>Первая линия: 50м от моря</p>
       </div>
-      <div class="feature-card">
+      <div class="feature-card reveal">
         <img src="https://sz-gradient.ru/images/site-img/p3.png" alt="">
         <p>Панорамный вид на море</p>
       </div>
@@ -85,8 +90,9 @@
 
   <!-- O PROEKTE -->
   <section class="section section-blue" id="o-komplekse">
+    <div class="deco-blob deco-blob-cyan"></div>
     <div class="container split">
-      <div class="split-text">
+      <div class="split-text reveal">
         <h4 class="overline overline-white">О проекте</h4>
         <h3>Наслаждайтесь гармонией с природой на побережье Крыма</h3>
         <p>В Керчи, историческом городе с богатым культурным наследием, потрясающей историей и живописными пейзажами, активно развивается строительство и стремительно растет рынок недвижимости. Наша компания является одним из ключевых игроков на данном рынке и предлагает вам окунуться в мир комфорта и красоты вместе!</p>
@@ -95,10 +101,10 @@
         <a href="#" class="link-more">Узнать больше &rarr;</a>
       </div>
       <div class="stat-grid">
-        <div class="stat-card"><span class="stat-num">8</span><span class="stat-label">Количество этажей</span></div>
-        <div class="stat-card"><span class="stat-num">8385,3 м<sup>2</sup></span><span class="stat-label">Общая площадь комплекса</span></div>
-        <div class="stat-card"><span class="stat-num">5111,2 м<sup>2</sup></span><span class="stat-label">Площадь видовых квартир</span></div>
-        <div class="stat-card"><span class="stat-num">910,8 м<sup>2</sup></span><span class="stat-label">Площадь под коммерцию</span></div>
+        <div class="stat-card reveal"><span class="stat-num"><span class="count" data-count="8">0</span></span><span class="stat-label">Количество этажей</span></div>
+        <div class="stat-card reveal"><span class="stat-num"><span class="count" data-count="8385.3" data-decimals="1">0</span> м<sup>2</sup></span><span class="stat-label">Общая площадь комплекса</span></div>
+        <div class="stat-card reveal"><span class="stat-num"><span class="count" data-count="5111.2" data-decimals="1">0</span> м<sup>2</sup></span><span class="stat-label">Площадь видовых квартир</span></div>
+        <div class="stat-card reveal"><span class="stat-num"><span class="count" data-count="910.8" data-decimals="1">0</span> м<sup>2</sup></span><span class="stat-label">Площадь под коммерцию</span></div>
       </div>
     </div>
   </section>
@@ -110,7 +116,7 @@
 
   <section class="section section-cream">
     <div class="container split">
-      <div class="split-text">
+      <div class="split-text reveal">
         <h4 class="overline">Локация</h4>
         <h3>Живописное место с удачным расположением</h3>
         <p>Многоквартирный жилой дом от СЗ ГРАДИЕНТ представляет собой уникальное предложение на рынке недвижимости, объединяющее комфорт, современный дизайн и удобное расположение в самом центре города Керчь.</p>
@@ -121,7 +127,7 @@
           <div><strong>15 минут</strong><span>до лестницы Митридат</span></div>
         </div>
       </div>
-      <div class="map-block">
+      <div class="map-block reveal">
         <iframe src="https://yandex.ru/map-widget/v1/?ll=36.470700%2C45.354000&z=13&pt=36.470700,45.354000,pm2rdm" width="100%" height="360" frameborder="0"></iframe>
         <div class="map-pin-card">
           <img src="https://sz-gradient.ru/images/site-img/sm_ya_logo.png" alt="Яндекс карты" class="ya-icon">
@@ -147,16 +153,16 @@
         <button class="round-btn round-btn-active" id="advNext" aria-label="Вперёд">&rsaquo;</button>
       </div>
       <div class="advantages-track" id="advantagesTrack">
-        <div class="advantage-card">
-          <img src="https://sz-gradient.ru/img/400x265/e/imgcard1-4dfdd6fa.png" alt="Набережная">
+        <div class="advantage-card reveal">
+          <div class="img-zoom"><img src="https://sz-gradient.ru/img/400x265/e/imgcard1-4dfdd6fa.png" alt="Набережная"></div>
           <div class="advantage-text">В непосредственной близости расположена <strong>центральная набережная с пляжем</strong> и причалом, где можно насладиться вечерними прогулками, заниматься спортом или просто отдыхать на свежем воздухе у моря, провожать закаты и встречать рассветы.</div>
         </div>
-        <div class="advantage-card">
-          <img src="https://sz-gradient.ru/img/400x265/4/imgcard2-0b2fe39e.png" alt="Детский сад и гимназия">
+        <div class="advantage-card reveal">
+          <div class="img-zoom"><img src="https://sz-gradient.ru/img/400x265/4/imgcard2-0b2fe39e.png" alt="Детский сад и гимназия"></div>
           <div class="advantage-text">Рядом с домом расположены <strong>детский сад и гимназия</strong>, что делает его идеальным выбором для жизни с детишками.</div>
         </div>
-        <div class="advantage-card">
-          <img src="https://sz-gradient.ru/img/400x265/2/imgcard3-369e0f42.png" alt="Керченский мост">
+        <div class="advantage-card reveal">
+          <div class="img-zoom"><img src="https://sz-gradient.ru/img/400x265/2/imgcard3-369e0f42.png" alt="Керченский мост"></div>
           <div class="advantage-text">Уникальный вид на <strong>Керченский мост</strong>, который является одним из ярчайших символов полуострова, добавляет проекту особую атмосферу и подчеркивает его привлекательность.</div>
         </div>
       </div>
@@ -166,7 +172,7 @@
   <!-- PLANIROVKI -->
   <section class="section section-white" id="planirovki">
     <div class="container split">
-      <div class="split-text">
+      <div class="split-text reveal">
         <h4 class="overline">Планировки</h4>
         <h3>Выберите подходящую планировку</h3>
         <p>Жилой дом СЗ ГРАДИЕНТ — это не просто место для проживания, это стиль жизни, который сочетает в себе комфорт, безопасность и все преимущества городской инфраструктуры. Уникальное расположение, современные технологии, высокий уровень сервиса и забота о жителях — все это делает проект привлекательным для покупателей, ищущих новое жилье в живописном и динамичном районе.</p>
@@ -177,7 +183,7 @@
         </div>
       </div>
 
-      <div class="plan-viewer">
+      <div class="plan-viewer reveal">
         <div class="plan-nav">
           <button class="round-btn" id="planPrev">&lsaquo;</button>
           <button class="round-btn round-btn-active" id="planNext">&rsaquo;</button>
@@ -194,7 +200,7 @@
 
   <!-- CALLBACK STRIP -->
   <section class="callback-strip">
-    <div class="container">
+    <div class="container reveal">
       <h3>Задайте нам вопрос</h3>
       <p>У вас возникли какие-то вопросы?<br>Вы можете написать нам и мы ответим<br>удобным для вас способом!</p>
       <button class="btn btn-green btn-lg" id="ctaCallbackBtn" type="button">связаться с нами</button>
@@ -203,7 +209,7 @@
 
   <!-- O GORODE -->
   <section class="section section-white" id="o-gorode">
-    <div class="container">
+    <div class="container reveal">
       <h4 class="overline">О Керчи</h4>
       <h3>Исторические жемчужины керчи</h3>
       <p class="kerch-text"><strong>Керчь славится своими археологическими находками.</strong><br>
@@ -213,9 +219,9 @@
         <button class="round-btn round-btn-active" id="galNext">&rsaquo;</button>
       </div>
       <div class="gallery-track" id="galleryTrack">
-        <img src="https://sz-gradient.ru/images/phocagallery/%D0%93%D0%B0%D0%BB%D0%B5%D1%80%D0%B5%D1%8F/thumbs/phoca_thumb_l_gal-1.jpg" alt="Керчь">
-        <img src="https://sz-gradient.ru/images/phocagallery/%D0%93%D0%B0%D0%BB%D0%B5%D1%80%D0%B5%D1%8F/thumbs/phoca_thumb_l_gal-2.jpg" alt="Керчь">
-        <img src="https://sz-gradient.ru/images/phocagallery/%D0%93%D0%B0%D0%BB%D0%B5%D1%80%D0%B5%D1%8F/thumbs/phoca_thumb_l_gal-3.jpg" alt="Керчь">
+        <div class="img-zoom reveal"><img src="https://sz-gradient.ru/images/phocagallery/%D0%93%D0%B0%D0%BB%D0%B5%D1%80%D0%B5%D1%8F/thumbs/phoca_thumb_l_gal-1.jpg" alt="Керчь"></div>
+        <div class="img-zoom reveal"><img src="https://sz-gradient.ru/images/phocagallery/%D0%93%D0%B0%D0%BB%D0%B5%D1%80%D0%B5%D1%8F/thumbs/phoca_thumb_l_gal-2.jpg" alt="Керчь"></div>
+        <div class="img-zoom reveal"><img src="https://sz-gradient.ru/images/phocagallery/%D0%93%D0%B0%D0%BB%D0%B5%D1%80%D0%B5%D1%8F/thumbs/phoca_thumb_l_gal-3.jpg" alt="Керчь"></div>
       </div>
     </div>
   </section>
@@ -223,7 +229,7 @@
   <!-- CONTACTS -->
   <section class="section section-cream" id="contacts">
     <div class="container split">
-      <div class="split-text">
+      <div class="split-text reveal">
         <h4 class="overline">Контакты отдела продаж в Керчи</h4>
         <h3>Воплотите свою мечту в реальность</h3>
         <div class="contact-phones">
@@ -236,7 +242,7 @@
         </a>
       </div>
 
-      <div class="map-block">
+      <div class="map-block reveal">
         <iframe src="https://yandex.ru/map-widget/v1/?ll=36.470700%2C45.354000&z=14&pt=36.470700,45.354000,pm2rdm" width="100%" height="320" frameborder="0"></iframe>
       </div>
     </div>
