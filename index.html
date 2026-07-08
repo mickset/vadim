@@ -269,6 +269,12 @@
     <form id="callForm">
       <input type="text" name="name" id="callName" placeholder="Ваше имя" required>
       <input type="tel" name="phone" id="callPhone" placeholder="Телефон" required>
+      <!-- Honeypot: hidden from real visitors, but simple bots that auto-fill every field
+           will populate it — script.js silently drops the submission if it's non-empty. -->
+      <div class="hp-field" aria-hidden="true">
+        <label for="callWebsite">Website</label>
+        <input type="text" name="website" id="callWebsite" tabindex="-1" autocomplete="off">
+      </div>
       <p class="consent">Отправляя заявку, Вы даете <a href="https://sz-gradient.ru/media/docs/politika-konfidentsialnosti.doc" target="_blank" rel="noopener">согласие</a> на обработку <a href="https://sz-gradient.ru/media/docs/soglasie-na-obrabotku-PD.doc" target="_blank" rel="noopener">персональных данных</a></p>
       <button type="submit" class="btn btn-green" id="callSubmitBtn">Заказать звонок</button>
     </form>

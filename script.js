@@ -57,8 +57,26 @@ document.addEventListener('DOMContentLoaded', () => {
   modalCloseBtn.addEventListener('click', closeModal);
   modalOverlay.addEventListener('click', (e) => { if (e.target === modalOverlay) closeModal(); });
 
+  const LEAD_THROTTLE_MS = 60000; // don't let the same browser submit more than once per minute
+
   document.getElementById('callForm').addEventListener('submit', async (e) => {
     e.preventDefault();
+
+    // Honeypot: real visitors never see or fill this field. If it has a value, this is a bot —
+    // pretend everything worked (don't tip it off) and quietly drop the submission.
+    const honeypot = document.getElementById('callWebsite');
+    if (honeypot && honeypot.value.trim() !== '') {
+      closeModal();
+      e.target.reset();
+      return;
+    }
+
+    // Throttle: block rapid repeat submissions from the same browser.
+    const lastSubmit = Number(localStorage.getItem('leadLastSubmitAt') || 0);
+    if (Date.now() - lastSubmit < LEAD_THROTTLE_MS) {
+      alert('Заявка уже отправлена недавно — мы уже её получили, ожидайте звонка.');
+      return;
+    }
 
     const name = document.getElementById('callName').value.trim();
     const phone = document.getElementById('callPhone').value.trim();
@@ -92,6 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (sbResult && sbResult.error) console.error('Supabase error:', sbResult.error);
 
     if (tgResult.ok || (sbResult && !sbResult.error)) {
+      localStorage.setItem('leadLastSubmitAt', String(Date.now()));
       alert('Спасибо! Мы вам перезвоним в ближайшее время.');
       closeModal();
       e.target.reset();
