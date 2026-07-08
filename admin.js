@@ -27,7 +27,7 @@ function showDashboard() {
   dashboard.hidden = false;
   loadLeads();
   if (tickTimer) clearInterval(tickTimer);
-  tickTimer = setInterval(renderLeads, 30000); // refresh "elapsed" labels every 30s
+  tickTimer = setInterval(loadLeads, 30000); // re-fetch from Supabase every 30s (new leads + fresh "elapsed" labels)
 }
 
 function formatDateTime(iso) {
