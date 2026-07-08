@@ -11,6 +11,11 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
+/* [hidden] and .login-screen{display:flex} have equal CSS specificity, and this
+   stylesheet loads after the browser's default one — so without this rule,
+   toggling the `hidden` attribute via JS would not actually hide the login form. */
+[hidden] { display: none !important; }
+
 body {
   font-family: var(--font-main);
   background: #f4f6f9;
