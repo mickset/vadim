@@ -266,10 +266,10 @@
     <button class="modal-close" id="modalCloseBtn">&times;</button>
     <h3>Заказать звонок</h3>
     <form id="callForm">
-      <input type="text" placeholder="Ваше имя" required>
-      <input type="tel" placeholder="Телефон" required>
+      <input type="text" name="name" id="callName" placeholder="Ваше имя" required>
+      <input type="tel" name="phone" id="callPhone" placeholder="Телефон" required>
       <p class="consent">Отправляя заявку, Вы даете <a href="https://sz-gradient.ru/media/docs/politika-konfidentsialnosti.doc" target="_blank" rel="noopener">согласие</a> на обработку <a href="https://sz-gradient.ru/media/docs/soglasie-na-obrabotku-PD.doc" target="_blank" rel="noopener">персональных данных</a></p>
-      <button type="submit" class="btn btn-green">Заказать звонок</button>
+      <button type="submit" class="btn btn-green" id="callSubmitBtn">Заказать звонок</button>
     </form>
   </div>
 </div>

@@ -1,3 +1,12 @@
+/* ---------- Telegram bot config ----------
+   1. Create a bot via @BotFather in Telegram, copy the token it gives you.
+   2. Send any message to the bot (or add it to a group) then open
+      https://api.telegram.org/bot<TOKEN>/getUpdates in a browser to find the chat id
+      (it's the number in "chat":{"id":...}). Group chat ids are negative.
+   3. Paste both values below. */
+const TELEGRAM_BOT_TOKEN = '8278679014:AAGhhPe6CxtGwyLdVAkGsDu_HYzFkfL8mwU';
+const TELEGRAM_CHAT_ID = '-1001952149907';
+
 document.addEventListener('DOMContentLoaded', () => {
 
   /* ---------- Header scroll state ---------- */
@@ -28,11 +37,49 @@ document.addEventListener('DOMContentLoaded', () => {
   modalCloseBtn.addEventListener('click', closeModal);
   modalOverlay.addEventListener('click', (e) => { if (e.target === modalOverlay) closeModal(); });
 
-  document.getElementById('callForm').addEventListener('submit', (e) => {
+  document.getElementById('callForm').addEventListener('submit', async (e) => {
     e.preventDefault();
-    alert('Спасибо! Заявка отправлена (демо-форма).');
-    closeModal();
-    e.target.reset();
+
+    const name = document.getElementById('callName').value.trim();
+    const phone = document.getElementById('callPhone').value.trim();
+    const submitBtn = document.getElementById('callSubmitBtn');
+
+    if (TELEGRAM_BOT_TOKEN === 'ВАШ_ТОКЕН_БОТА' || TELEGRAM_CHAT_ID === 'ВАШ_CHAT_ID') {
+      alert('Telegram-бот ещё не настроен: впишите TELEGRAM_BOT_TOKEN и TELEGRAM_CHAT_ID в script.js');
+      return;
+    }
+
+    const text =
+      '📞 Новая заявка "Заказать звонок" с сайта sz-gradient\n' +
+      'Имя: ' + (name || '—') + '\n' +
+      'Телефон: ' + (phone || '—');
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Отправка...';
+
+    try {
+      const res = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text })
+      });
+      const data = await res.json();
+
+      if (data.ok) {
+        alert('Спасибо! Мы вам перезвоним в ближайшее время.');
+        closeModal();
+        e.target.reset();
+      } else {
+        console.error('Telegram error:', data);
+        alert('Не удалось отправить заявку. Попробуйте позвонить нам напрямую.');
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Не удалось отправить заявку. Проверьте соединение с интернетом.');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Заказать звонок';
+    }
   });
 
   /* ---------- Advantages carousel (simple horizontal scroll) ---------- */
