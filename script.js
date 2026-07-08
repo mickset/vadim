@@ -16,8 +16,15 @@ const TELEGRAM_CHAT_ID = '-1001952149907';
 const SUPABASE_URL = 'https://pzdvyzkmgzjznwnroztz.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB6ZHZ5emttZ3pqem53bnJvenR6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM1MTk2NjQsImV4cCI6MjA5OTA5NTY2NH0.SQ0I1FME0Tcb1JuPPCF7gSR6aZh56GygdOhWrM5Kfd8';
 
+// persistSession/autoRefreshToken: false — this is the PUBLIC site's client. It must always
+// act as a plain anonymous visitor and must NOT pick up an admin session that happens to be
+// stored in this browser's localStorage (e.g. if you're also logged into admin.html on the
+// same origin). Without this, supabase-js would silently send the admin's auth token instead
+// of the anon key, and inserts would get rejected by RLS (no INSERT policy for authenticated).
 const supabaseClient = (window.supabase && SUPABASE_ANON_KEY !== 'ВАШ_SUPABASE_ANON_KEY')
-  ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+  ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+      auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false }
+    })
   : null;
 
 document.addEventListener('DOMContentLoaded', () => {
