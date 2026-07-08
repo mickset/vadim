@@ -14,7 +14,7 @@ const TELEGRAM_CHAT_ID = '-1001952149907';
    3. Also create an admin login: Authentication -> Users -> Add user (email + password) —
       that's what you'll use to sign in on admin.html. */
 const SUPABASE_URL = 'https://pzdvyzkmgzjznwnroztz.supabase.co';
-const SUPABASE_ANON_KEY = 'sb_publishable_m73VLjPd2aL2IeHhAQJXrg_SEpAea5s';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB6ZHZ5emttZ3pqem53bnJvenR6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM1MTk2NjQsImV4cCI6MjA5OTA5NTY2NH0.SQ0I1FME0Tcb1JuPPCF7gSR6aZh56GygdOhWrM5Kfd8';
 
 const supabaseClient = (window.supabase && SUPABASE_ANON_KEY !== 'ВАШ_SUPABASE_ANON_KEY')
   ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
