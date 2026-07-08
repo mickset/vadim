@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>СЗ Градиент — Заявки (админ)</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+<div class="admin-wrap">
+
+  <!-- LOGIN SCREEN -->
+  <div class="login-screen" id="loginScreen">
+    <form class="login-box" id="loginForm">
+      <h1>Вход для менеджера</h1>
+      <p class="login-hint">Учётку создайте в Supabase: Authentication → Users → Add user.</p>
+      <input type="email" id="loginEmail" placeholder="Email" required autocomplete="username">
+      <input type="password" id="loginPassword" placeholder="Пароль" required autocomplete="current-password">
+      <button type="submit" class="btn-primary">Войти</button>
+      <p class="login-error" id="loginError"></p>
+    </form>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="dashboard" id="dashboard" hidden>
+    <header class="admin-header">
+      <h1>Заявки — СЗ Градиент</h1>
+      <div class="admin-header-actions">
+        <button class="btn-ghost" id="refreshBtn">Обновить</button>
+        <button class="btn-ghost" id="logoutBtn">Выйти</button>
+      </div>
+    </header>
+
+    <div class="stats-row">
+      <div class="stat-box">
+        <span class="stat-value" id="statTotal">0</span>
+        <span class="stat-caption">Всего заявок</span>
+      </div>
+      <div class="stat-box stat-box-warn">
+        <span class="stat-value" id="statPending">0</span>
+        <span class="stat-caption">Ждут звонка</span>
+      </div>
+      <div class="stat-box stat-box-ok">
+        <span class="stat-value" id="statCalled">0</span>
+        <span class="stat-caption">Обработано</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-value" id="statToday">0</span>
+        <span class="stat-caption">Сегодня</span>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table class="leads-table">
+        <thead>
+          <tr>
+            <th>Статус</th>
+            <th>Имя</th>
+            <th>Телефон</th>
+            <th>Поступила</th>
+            <th>Прошло времени</th>
+            <th>Звонок</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="leadsBody">
+          <tr><td colspan="7" class="empty-row">Загрузка…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<script src="admin.js"></script>
+</body>
+</html>

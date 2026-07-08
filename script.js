@@ -7,6 +7,19 @@
 const TELEGRAM_BOT_TOKEN = '8278679014:AAGhhPe6CxtGwyLdVAkGsDu_HYzFkfL8mwU';
 const TELEGRAM_CHAT_ID = '-1001952149907';
 
+/* ---------- Supabase config (mini-CRM storage) ----------
+   1. Run supabase-setup.sql (in this same folder) in the Supabase SQL editor
+      (Dashboard -> SQL Editor -> New query -> paste -> Run).
+   2. Project Settings -> API -> copy the "anon public" key below.
+   3. Also create an admin login: Authentication -> Users -> Add user (email + password) —
+      that's what you'll use to sign in on admin.html. */
+const SUPABASE_URL = 'https://pzdvyzkmgzjznwnroztz.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_m73VLjPd2aL2IeHhAQJXrg_SEpAea5s';
+
+const supabaseClient = (window.supabase && SUPABASE_ANON_KEY !== 'ВАШ_SUPABASE_ANON_KEY')
+  ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+  : null;
+
 document.addEventListener('DOMContentLoaded', () => {
 
   /* ---------- Header scroll state ---------- */
@@ -44,11 +57,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const phone = document.getElementById('callPhone').value.trim();
     const submitBtn = document.getElementById('callSubmitBtn');
 
-    if (TELEGRAM_BOT_TOKEN === 'ВАШ_ТОКЕН_БОТА' || TELEGRAM_CHAT_ID === 'ВАШ_CHAT_ID') {
-      alert('Telegram-бот ещё не настроен: впишите TELEGRAM_BOT_TOKEN и TELEGRAM_CHAT_ID в script.js');
-      return;
-    }
-
     const text =
       '📞 Новая заявка "Заказать звонок" с сайта sz-gradient\n' +
       'Имя: ' + (name || '—') + '\n' +
@@ -57,28 +65,31 @@ document.addEventListener('DOMContentLoaded', () => {
     submitBtn.disabled = true;
     submitBtn.textContent = 'Отправка...';
 
-    try {
-      const res = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text })
-      });
-      const data = await res.json();
+    // Fire both integrations in parallel; don't let one failure block the other.
+    const telegramPromise = fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text })
+    }).then(r => r.json()).catch(err => ({ ok: false, error: err }));
 
-      if (data.ok) {
-        alert('Спасибо! Мы вам перезвоним в ближайшее время.');
-        closeModal();
-        e.target.reset();
-      } else {
-        console.error('Telegram error:', data);
-        alert('Не удалось отправить заявку. Попробуйте позвонить нам напрямую.');
-      }
-    } catch (err) {
-      console.error(err);
-      alert('Не удалось отправить заявку. Проверьте соединение с интернетом.');
-    } finally {
-      submitBtn.disabled = false;
-      submitBtn.textContent = 'Заказать звонок';
+    const supabasePromise = supabaseClient
+      ? supabaseClient.from('leads').insert({ name, phone }).then(r => r)
+      : Promise.resolve({ error: 'supabase not configured' });
+
+    const [tgResult, sbResult] = await Promise.all([telegramPromise, supabasePromise]);
+
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Заказать звонок';
+
+    if (!tgResult.ok) console.error('Telegram error:', tgResult);
+    if (sbResult && sbResult.error) console.error('Supabase error:', sbResult.error);
+
+    if (tgResult.ok || (sbResult && !sbResult.error)) {
+      alert('Спасибо! Мы вам перезвоним в ближайшее время.');
+      closeModal();
+      e.target.reset();
+    } else {
+      alert('Не удалось отправить заявку. Попробуйте позвонить нам напрямую.');
     }
   });
 
