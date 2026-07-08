@@ -93,6 +93,9 @@ function renderLeads() {
     leadsBody.querySelectorAll('[data-mark-id]').forEach(btn => {
       btn.addEventListener('click', () => markCalled(btn.getAttribute('data-mark-id')));
     });
+    leadsBody.querySelectorAll('[data-unmark-id]').forEach(btn => {
+      btn.addEventListener('click', () => unmarkCalled(btn.getAttribute('data-unmark-id')));
+    });
   }
   renderStats();
 }
@@ -105,7 +108,8 @@ function rowHtml(lead) {
   const urgency = urgencyClass(lead.created_at, lead.called);
 
   const actionCell = lead.called
-    ? '<span class="called-time">' + formatDateTime(lead.called_at) + '</span>'
+    ? '<span class="called-time">' + formatDateTime(lead.called_at) + '</span>' +
+      ' <button class="mark-btn mark-btn-undo" data-unmark-id="' + lead.id + '">Отменить</button>'
     : '<button class="mark-btn" data-mark-id="' + lead.id + '">Отметить звонок</button>';
 
   return (
@@ -154,6 +158,25 @@ async function markCalled(id) {
     console.error(error);
     alert('Не удалось обновить статус: ' + error.message);
     if (btn) { btn.disabled = false; btn.textContent = 'Отметить звонок'; }
+    return;
+  }
+  await loadLeads();
+}
+
+async function unmarkCalled(id) {
+  if (!sb) return;
+  const btn = document.querySelector('[data-unmark-id="' + id + '"]');
+  if (btn) { btn.disabled = true; btn.textContent = '...'; }
+
+  const { error } = await sb
+    .from('leads')
+    .update({ called: false, called_at: null })
+    .eq('id', id);
+
+  if (error) {
+    console.error(error);
+    alert('Не удалось обновить статус: ' + error.message);
+    if (btn) { btn.disabled = false; btn.textContent = 'Отменить'; }
     return;
   }
   await loadLeads();
