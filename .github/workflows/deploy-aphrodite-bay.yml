@@ -1,9 +1,12 @@
-name: Deploy to Fozzy hosting
+name: Deploy Aphrodite Bay to Fozzy hosting
 
 on:
   push:
     branches:
       - main
+    paths:
+      - "Aphrodite Bay/**"
+      - ".github/workflows/deploy-aphrodite-bay.yml"
 
 jobs:
   deploy:
@@ -19,8 +22,8 @@ jobs:
           REMOTE_HOST: ${{ secrets.SSH_HOST }}
           REMOTE_USER: ${{ secrets.SSH_USERNAME }}
           REMOTE_PORT: ${{ secrets.SSH_PORT }}
-          SOURCE: "./"
-          TARGET: "public_html/vadim/"
+          SOURCE: "Aphrodite Bay/"
+          TARGET: "public_html/vadim/aphrodite-bay/"
           # .git/.github don't need to live on the server; add more patterns
           # here (comma-separated) if you keep local-only files in the repo.
           EXCLUDE: ".git/, .github/, README.md"
