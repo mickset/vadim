@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - "Aphrodite Bay/**"
+      - "aphrodite-bay/**"
       - ".github/workflows/deploy-aphrodite-bay.yml"
 
 jobs:
@@ -22,7 +22,7 @@ jobs:
           REMOTE_HOST: ${{ secrets.SSH_HOST }}
           REMOTE_USER: ${{ secrets.SSH_USERNAME }}
           REMOTE_PORT: ${{ secrets.SSH_PORT }}
-          SOURCE: "Aphrodite Bay/"
+          SOURCE: "aphrodite-bay/"
           TARGET: "public_html/vadim/aphrodite-bay/"
           # .git/.github don't need to live on the server; add more patterns
           # here (comma-separated) if you keep local-only files in the repo.
