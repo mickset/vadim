@@ -50,10 +50,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const modalOverlay = document.getElementById('callModalOverlay');
   const modalCloseBtn = document.getElementById('modalCloseBtn');
   const openModal = () => modalOverlay.classList.add('open');
+  // Opening the modal from a generic CTA (not from a specific lot) should not
+  // carry over a previously-selected unit into an unrelated submission.
+  const openModalFresh = () => { window.__selectedUnitLabel = null; openModal(); };
   const closeModal = () => modalOverlay.classList.remove('open');
 
-  document.getElementById('ctaHeaderBtn').addEventListener('click', openModal);
-  document.getElementById('ctaCallbackBtn').addEventListener('click', openModal);
+  document.getElementById('ctaHeaderBtn').addEventListener('click', openModalFresh);
+  document.getElementById('ctaCallbackBtn').addEventListener('click', openModalFresh);
+  const ctaHeroBtn = document.getElementById('ctaHeroBtn');
+  if (ctaHeroBtn) ctaHeroBtn.addEventListener('click', openModalFresh);
   modalCloseBtn.addEventListener('click', closeModal);
   modalOverlay.addEventListener('click', (e) => { if (e.target === modalOverlay) closeModal(); });
 
@@ -83,9 +88,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const submitBtn = document.getElementById('callSubmitBtn');
 
     const text =
-      '📞 Новая заявка "Заказать звонок" с сайта sz-gradient\n' +
+      '📞 Новая заявка "Заказать звонок" с сайта Aphrodite Bay\n' +
       'Имя: ' + (name || '—') + '\n' +
-      'Телефон: ' + (phone || '—');
+      'Телефон: ' + (phone || '—') +
+      (window.__selectedUnitLabel ? '\nИнтересует: ' + window.__selectedUnitLabel : '');
 
     submitBtn.disabled = true;
     submitBtn.textContent = 'Отправка...';
@@ -114,6 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
       alert('Спасибо! Мы вам перезвоним в ближайшее время.');
       closeModal();
       e.target.reset();
+      window.__selectedUnitLabel = null;
     } else {
       alert('Не удалось отправить заявку. Попробуйте позвонить нам напрямую.');
     }
@@ -140,53 +147,216 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   galTrack.style.overflowX = 'auto';
 
-  /* ---------- Apartment plans data & slider ---------- */
+  /* ---------- Apartment plans data ----------
+     Aphrodite Bay is a fictional demo project — прайс-лист и площади вымышленные.
+     rooms: 0 = студия, 1 = однокомнатная, 2 = двухкомнатная.
+     group: 'floor2' / 'floor3-8' — условное разбиение по этажам для демонстрации фильтра.
+     Планировки — иллюстративные схемы (свои SVG), не настоящие чертежи. */
+  const PLAN_IMG_BY_ROOMS = { 0: 'floorplan-studio.svg', 1: 'floorplan-1br.svg', 2: 'floorplan-2br.svg' };
   const plans = [
-    { title: 'Студия, 39.5 м2 (35.7 м2)', price: 'от 7 140 000 р.', img: 'https://sz-gradient.ru/images/plan/sm_page-0001.jpg' },
-    { title: 'Однокомнатная, 43.3 м2 (41.8 м2)', price: 'от 8 360 000 р.', img: 'https://sz-gradient.ru/images/plan/sm_page-0002.jpg' },
-    { title: 'Двухкомнатная, 61.1 м2 (57.3 м2)', price: 'от 11 460 000 р.', img: 'https://sz-gradient.ru/images/plan/sm_page-0003.jpg' },
-    { title: 'Однокомнатная, 38.2 м2 (35.3 м2)', price: 'от 7 060 000 р.', img: 'https://sz-gradient.ru/images/plan/sm_page-0004.jpg' },
-    { title: 'Однокомнатная, 38.8 м2 (35.9 м2)', price: 'от 7 180 000 р.', img: 'https://sz-gradient.ru/images/plan/sm_page-0005.jpg' },
-    { title: 'Однокомнатная, 48.1 м2 (46.7 м2)', price: 'от 9 340 000 р.', img: 'https://sz-gradient.ru/images/plan/sm_page-0006.jpg' },
-    { title: 'Двухкомнатная, 75.0 м2 (68.9 м2)', price: 'от 13 780 000 р.', img: 'https://sz-gradient.ru/images/plan/sm_page-0007.jpg' },
-    { title: 'Студия, 41.0 м2 (37.0 м2)', price: 'от 7 400 000 р.', img: 'https://sz-gradient.ru/images/plan/sm_page-0008.jpg' },
-    { title: 'Двухкомнатная, 67.0 м2 (61.2 м2)', price: 'от 12 240 000 р.', img: 'https://sz-gradient.ru/images/plan/sm_page-0009.jpg' },
-    { title: 'Однокомнатная, 51.7 м2 (48.3 м2)', price: 'от 9 660 000 р.', img: 'https://sz-gradient.ru/images/plan/sm_page-00010.jpg' },
-    { title: 'Двухкомнатная, 72.8 м2 (62.5 м2)', price: 'от 15 625 000 р.', img: 'https://sz-gradient.ru/images/plan/sm_page-00011.jpg' },
-    { title: 'Студия, 44.6 м2 (36.7 м2)', price: 'от 9 175 000 р.', img: 'https://sz-gradient.ru/images/plan/sm_page-00012.jpg' },
-    { title: 'Студия, 42.3 м2 (34.9 м2)', price: 'от 8 725 000 р.', img: 'https://sz-gradient.ru/images/plan/sm_page-00013.jpg' },
-    { title: 'Студия, 42.4 м2 (35.0 м2)', price: 'от 8 750 000 р.', img: 'https://sz-gradient.ru/images/plan/sm_page-00014.jpg' },
-    { title: 'Однокомнатная, 57.4 м2 (50.5 м2)', price: 'от 12 625 000 р.', img: 'https://sz-gradient.ru/images/plan/sm_page-00015.jpg' },
-    { title: 'Однокомнатная, 51.2 м2 (47.5 м2)', price: 'от 11 875 000 р.', img: 'https://sz-gradient.ru/images/plan/sm_page-00016.jpg' }
-  ];
+    { rooms: 0, area: 39.5, live: 35.7, price: 7140000,  group: 'floor2' },
+    { rooms: 1, area: 43.3, live: 41.8, price: 8360000,  group: 'floor2' },
+    { rooms: 2, area: 61.1, live: 57.3, price: 11460000, group: 'floor2' },
+    { rooms: 1, area: 38.2, live: 35.3, price: 7060000,  group: 'floor2' },
+    { rooms: 1, area: 38.8, live: 35.9, price: 7180000,  group: 'floor2' },
+    { rooms: 1, area: 48.1, live: 46.7, price: 9340000,  group: 'floor3-8' },
+    { rooms: 2, area: 75.0, live: 68.9, price: 13780000, group: 'floor3-8' },
+    { rooms: 0, area: 41.0, live: 37.0, price: 7400000,  group: 'floor3-8' },
+    { rooms: 2, area: 67.0, live: 61.2, price: 12240000, group: 'floor3-8' },
+    { rooms: 1, area: 51.7, live: 48.3, price: 9660000,  group: 'floor3-8' },
+    { rooms: 2, area: 72.8, live: 62.5, price: 15625000, group: 'floor3-8' },
+    { rooms: 0, area: 44.6, live: 36.7, price: 9175000,  group: 'floor3-8' },
+    { rooms: 0, area: 42.3, live: 34.9, price: 8725000,  group: 'floor3-8' },
+    { rooms: 0, area: 42.4, live: 35.0, price: 8750000,  group: 'floor3-8' },
+    { rooms: 1, area: 57.4, live: 50.5, price: 12625000, group: 'floor3-8' },
+    { rooms: 1, area: 51.2, live: 47.5, price: 11875000, group: 'floor3-8' }
+  ].map((p, i) => Object.assign({ id: i + 1, img: PLAN_IMG_BY_ROOMS[p.rooms] }, p));
 
-  let planIndex = 0;
-  const planTitleEl = document.getElementById('planTitle');
-  const planPriceEl = document.getElementById('planPrice');
-  const planImageEl = document.getElementById('planImage');
+  const ROOM_LABELS = { 0: 'Студия', 1: '1-комнатная', 2: '2-комнатная' };
+  const GROUP_LABELS = { 'floor2': '2 этаж', 'floor3-8': '3–8 этажи' };
+  const fmtRub = n => n.toLocaleString('ru-RU') + ' ₽';
+  const fmtArea = n => n.toLocaleString('ru-RU', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 
-  function renderPlan() {
-    const p = plans[planIndex];
-    planTitleEl.textContent = p.title;
-    planPriceEl.textContent = p.price;
-    planImageEl.src = p.img;
+  /* ---------- Tower picker (marker popovers) ---------- */
+  const towerStage = document.getElementById('towerStage');
+  const towerPopover = document.getElementById('towerPopover');
+  const towerPopoverTitle = document.getElementById('towerPopoverTitle');
+  const towerPopoverCount = document.getElementById('towerPopoverCount');
+  const towerPopoverFrom = document.getElementById('towerPopoverFrom');
+  const towerPopoverLink = document.getElementById('towerPopoverLink');
+  let activeMarkerGroup = null;
+
+  function showTowerPopover(marker, group) {
+    const matches = plans.filter(p => p.group === group);
+    const minPrice = Math.min(...matches.map(p => p.price));
+    towerPopoverTitle.textContent = GROUP_LABELS[group];
+    towerPopoverCount.textContent = matches.length + ' ' + pluralPlan(matches.length);
+    towerPopoverFrom.textContent = minPrice.toLocaleString('ru-RU');
+    activeMarkerGroup = group;
+
+    towerPopover.hidden = false;
+    const mx = marker.style.getPropertyValue('--x');
+    const my = marker.style.getPropertyValue('--y');
+    towerPopover.style.left = mx;
+    towerPopover.style.top = my;
+    const stageRect = towerStage.getBoundingClientRect();
+    const markerLeftPx = (parseFloat(mx) / 100) * stageRect.width;
+    towerPopover.style.transform = markerLeftPx > stageRect.width / 2
+      ? 'translate(-100%, 14px)' : 'translate(0, 14px)';
+
+    document.querySelectorAll('.tower-marker').forEach(m => m.classList.remove('active'));
+    marker.classList.add('active');
   }
 
-  document.getElementById('planNext').addEventListener('click', () => {
-    planIndex = (planIndex + 1) % plans.length;
-    renderPlan();
+  function pluralPlan(n) {
+    const mod10 = n % 10, mod100 = n % 100;
+    if (mod10 === 1 && mod100 !== 11) return 'планировка';
+    if ([2,3,4].includes(mod10) && ![12,13,14].includes(mod100)) return 'планировки';
+    return 'планировок';
+  }
+
+  document.querySelectorAll('.tower-marker').forEach(marker => {
+    marker.addEventListener('click', (e) => {
+      e.stopPropagation();
+      showTowerPopover(marker, marker.getAttribute('data-group'));
+    });
   });
-  document.getElementById('planPrev').addEventListener('click', () => {
-    planIndex = (planIndex - 1 + plans.length) % plans.length;
-    renderPlan();
+  document.addEventListener('click', (e) => {
+    if (towerPopover && !towerPopover.hidden && !towerPopover.contains(e.target) && !e.target.closest('.tower-marker')) {
+      towerPopover.hidden = true;
+      document.querySelectorAll('.tower-marker').forEach(m => m.classList.remove('active'));
+    }
   });
 
-  /* ---------- Plan tabs (visual state only) ---------- */
-  document.querySelectorAll('.plan-tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-      document.querySelectorAll('.plan-tab').forEach(t => t.classList.remove('plan-tab-active'));
-      tab.classList.add('plan-tab-active');
+  const paramsViewBtn = document.getElementById('paramsViewBtn');
+  const towerViewBtn = document.getElementById('towerViewBtn');
+  if (paramsViewBtn) paramsViewBtn.addEventListener('click', () => {
+    paramsViewBtn.classList.add('segmented-btn-active');
+    towerViewBtn.classList.remove('segmented-btn-active');
+    openPlansModal();
+  });
+  if (towerViewBtn) towerViewBtn.addEventListener('click', () => {
+    towerViewBtn.classList.add('segmented-btn-active');
+    paramsViewBtn.classList.remove('segmented-btn-active');
+  });
+  if (towerPopoverLink) towerPopoverLink.addEventListener('click', () => {
+    openPlansModal({ group: activeMarkerGroup });
+  });
+
+  /* ---------- Plans filter modal ---------- */
+  const plansModalOverlay = document.getElementById('plansModalOverlay');
+  const plansListView = document.getElementById('plansListView');
+  const plansLotView = document.getElementById('plansLotView');
+  const plansGrid = document.getElementById('plansGrid');
+  const plansCount = document.getElementById('plansCount');
+  const roomsChips = document.querySelectorAll('#roomsChips .chip');
+  const floorChips = document.querySelectorAll('#floorChips .chip');
+  const areaFrom = document.getElementById('areaFrom');
+  const areaTo = document.getElementById('areaTo');
+  const priceFrom = document.getElementById('priceFrom');
+  const priceTo = document.getElementById('priceTo');
+  const plansSort = document.getElementById('plansSort');
+
+  function openPlansModal(preset) {
+    plansModalOverlay.classList.add('open');
+    plansLotView.hidden = true;
+    plansListView.hidden = false;
+    if (preset && preset.group) {
+      floorChips.forEach(c => c.classList.toggle('active', c.getAttribute('data-group') === preset.group));
+    }
+    renderPlansGrid();
+  }
+  function closePlansModal() { plansModalOverlay.classList.remove('open'); }
+
+  document.getElementById('plansModalClose').addEventListener('click', closePlansModal);
+  plansModalOverlay.addEventListener('click', (e) => { if (e.target === plansModalOverlay) closePlansModal(); });
+
+  roomsChips.forEach(chip => chip.addEventListener('click', () => { chip.classList.toggle('active'); renderPlansGrid(); }));
+  floorChips.forEach(chip => chip.addEventListener('click', () => { chip.classList.toggle('active'); renderPlansGrid(); }));
+  [areaFrom, areaTo, priceFrom, priceTo].forEach(input => input.addEventListener('input', renderPlansGrid));
+  plansSort.addEventListener('change', renderPlansGrid);
+
+  document.getElementById('plansResetBtn').addEventListener('click', () => {
+    roomsChips.forEach(c => c.classList.remove('active'));
+    floorChips.forEach(c => c.classList.remove('active'));
+    areaFrom.value = ''; areaTo.value = ''; priceFrom.value = ''; priceTo.value = '';
+    plansSort.value = 'price-asc';
+    renderPlansGrid();
+  });
+
+  function getFilteredPlans() {
+    const activeRooms = Array.from(roomsChips).filter(c => c.classList.contains('active')).map(c => Number(c.getAttribute('data-rooms')));
+    const activeGroups = Array.from(floorChips).filter(c => c.classList.contains('active')).map(c => c.getAttribute('data-group'));
+    const aFrom = parseFloat(areaFrom.value) || 0;
+    const aTo = parseFloat(areaTo.value) || Infinity;
+    const pFrom = parseFloat(priceFrom.value) || 0;
+    const pTo = parseFloat(priceTo.value) || Infinity;
+
+    let list = plans.filter(p =>
+      (!activeRooms.length || activeRooms.includes(p.rooms)) &&
+      (!activeGroups.length || activeGroups.includes(p.group)) &&
+      p.area >= aFrom && p.area <= aTo &&
+      p.price >= pFrom && p.price <= pTo
+    );
+
+    const sort = plansSort.value;
+    list = list.slice().sort((a, b) => {
+      if (sort === 'price-asc') return a.price - b.price;
+      if (sort === 'price-desc') return b.price - a.price;
+      if (sort === 'area-asc') return a.area - b.area;
+      if (sort === 'area-desc') return b.area - a.area;
+      return 0;
     });
+    return list;
+  }
+
+  function renderPlansGrid() {
+    const list = getFilteredPlans();
+    plansCount.textContent = list.length + ' ' + pluralPlan(list.length);
+    if (!list.length) {
+      plansGrid.innerHTML = '<p class="plans-empty">Ничего не найдено — попробуйте изменить фильтр</p>';
+      return;
+    }
+    plansGrid.innerHTML = list.map(p => (
+      '<div class="plan-card-item" data-id="' + p.id + '">' +
+        '<img src="' + p.img + '" alt="Планировка №' + p.id + '" loading="lazy">' +
+        '<p class="pc-meta">№' + p.id + ' · ' + GROUP_LABELS[p.group] + '</p>' +
+        '<p class="pc-title">' + ROOM_LABELS[p.rooms] + ', ' + fmtArea(p.area) + ' м²</p>' +
+        '<p class="pc-price">' + fmtRub(p.price) + '</p>' +
+      '</div>'
+    )).join('');
+    plansGrid.querySelectorAll('.plan-card-item').forEach(card => {
+      card.addEventListener('click', () => openLot(Number(card.getAttribute('data-id'))));
+    });
+  }
+
+  /* ---------- Lot detail view ---------- */
+  function openLot(id) {
+    const p = plans.find(x => x.id === id);
+    if (!p) return;
+    document.getElementById('lotImage').src = p.img;
+    document.getElementById('lotTitle').textContent = 'Планировка №' + p.id;
+    document.getElementById('lotArea').textContent = fmtArea(p.area) + ' м²';
+    document.getElementById('lotLive').textContent = fmtArea(p.live);
+    document.getElementById('lotRooms').textContent = ROOM_LABELS[p.rooms];
+    document.getElementById('lotFloor').textContent = GROUP_LABELS[p.group];
+    document.getElementById('lotPrice').textContent = fmtRub(p.price);
+    document.getElementById('lotPricePerM2').textContent = Math.round(p.price / p.area).toLocaleString('ru-RU') + ' ₽/м²';
+    window.__selectedUnitLabel = ROOM_LABELS[p.rooms] + ' №' + p.id + ', ' + fmtArea(p.area) + ' м², ' + fmtRub(p.price);
+
+    plansListView.hidden = true;
+    plansLotView.hidden = false;
+    plansLotView.scrollTop = 0;
+  }
+
+  document.getElementById('lotBackBtn').addEventListener('click', () => {
+    plansLotView.hidden = true;
+    plansListView.hidden = false;
+  });
+
+  document.getElementById('lotCtaBtn').addEventListener('click', () => {
+    closePlansModal();
+    modalOverlay.classList.add('open');
   });
 
   /* ---------- Smooth in-page nav (handles fixed header offset) ---------- */

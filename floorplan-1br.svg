@@ -1,0 +1,20 @@
+<svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <rect x="0" y="0" width="400" height="320" fill="#FFFFFF"/>
+  <rect x="30" y="30" width="340" height="260" fill="none" stroke="#1B1A17" stroke-width="3"/>
+  <!-- bedroom -->
+  <line x1="230" y1="30" x2="230" y2="180" stroke="#1B1A17" stroke-width="2"/>
+  <line x1="230" y1="180" x2="370" y2="180" stroke="#1B1A17" stroke-width="2"/>
+  <text x="300" y="110" text-anchor="middle" font-size="12" fill="#1B1A17" font-weight="700">Спальня</text>
+  <!-- bathroom -->
+  <rect x="30" y="30" width="80" height="70" fill="none" stroke="#1B1A17" stroke-width="2"/>
+  <text x="70" y="70" text-anchor="middle" font-size="10" fill="#5B6462">санузел</text>
+  <!-- balcony -->
+  <rect x="30" y="270" width="340" height="20" fill="none" stroke="#1B1A17" stroke-width="2"/>
+  <text x="200" y="284" text-anchor="middle" font-size="10" fill="#5B6462">балкон</text>
+  <!-- kitchen counter -->
+  <rect x="120" y="30" width="80" height="14" fill="#EDE8DC" stroke="#1B1A17" stroke-width="1.5"/>
+  <text x="170" y="54" text-anchor="middle" font-size="9" fill="#9399A0">кухня</text>
+  <text x="150" y="200" text-anchor="middle" font-size="13" fill="#1B1A17" font-weight="700">Гостиная</text>
+  <!-- door swing -->
+  <path d="M 230 210 A 40 40 0 0 1 270 250" fill="none" stroke="#1B1A17" stroke-width="1" stroke-dasharray="3 3"/>
+</svg>
