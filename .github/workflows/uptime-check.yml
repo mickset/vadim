@@ -22,4 +22,4 @@ jobs:
             fi
           }
           check "https://aphrodite-bay.dezigma.com/" "Сайт Aphrodite Bay"
-          check "https://api.dezigma.com" "Supabase backend"
+          check "https://api.dezigma.com/auth/v1/health" "Supabase backend"
