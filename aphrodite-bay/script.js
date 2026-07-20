@@ -13,7 +13,7 @@ const TELEGRAM_CHAT_ID = '-1001952149907';
    2. Project Settings -> API -> copy the "anon public" key below.
    3. Also create an admin login: Authentication -> Users -> Add user (email + password) —
       that's what you'll use to sign in on admin.html. */
-const SUPABASE_URL = 'http://135.106.167.100:8000';
+const SUPABASE_URL = 'https://api.dezigma.com';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlzcyI6InN1cGFiYXNlIiwiaWF0IjoxNzg0NTQ0ODk3LCJleHAiOjE5NDIyMjQ4OTd9.3uEKL3yur-OHqgJrHMACNNwFOjG156BB6WWUtuimIgQ';
 // Multi-tenant: this site's row in the shared `projects` table (self-hosted Supabase
 // now holds leads for multiple client projects, tagged by project_id).

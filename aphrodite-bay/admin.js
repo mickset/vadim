@@ -1,6 +1,6 @@
 /* ---------- Supabase config ----------
    Same project as the public site — paste the same anon key you used in script.js. */
-const SUPABASE_URL = 'http://135.106.167.100:8000';
+const SUPABASE_URL = 'https://api.dezigma.com';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlzcyI6InN1cGFiYXNlIiwiaWF0IjoxNzg0NTQ0ODk3LCJleHAiOjE5NDIyMjQ4OTd9.3uEKL3yur-OHqgJrHMACNNwFOjG156BB6WWUtuimIgQ';
 
 const sb = (window.supabase && SUPABASE_ANON_KEY !== 'ВАШ_SUPABASE_ANON_KEY')
