@@ -13,8 +13,11 @@ const TELEGRAM_CHAT_ID = '-1001952149907';
    2. Project Settings -> API -> copy the "anon public" key below.
    3. Also create an admin login: Authentication -> Users -> Add user (email + password) —
       that's what you'll use to sign in on admin.html. */
-const SUPABASE_URL = 'https://pzdvyzkmgzjznwnroztz.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB6ZHZ5emttZ3pqem53bnJvenR6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM1MTk2NjQsImV4cCI6MjA5OTA5NTY2NH0.SQ0I1FME0Tcb1JuPPCF7gSR6aZh56GygdOhWrM5Kfd8';
+const SUPABASE_URL = 'http://135.106.167.100:8000';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlzcyI6InN1cGFiYXNlIiwiaWF0IjoxNzg0NTQ0ODk3LCJleHAiOjE5NDIyMjQ4OTd9.3uEKL3yur-OHqgJrHMACNNwFOjG156BB6WWUtuimIgQ';
+// Multi-tenant: this site's row in the shared `projects` table (self-hosted Supabase
+// now holds leads for multiple client projects, tagged by project_id).
+const PROJECT_ID = 'e2900c5f-b760-4e42-a710-4325d15e8591'; // aphrodite-bay
 
 // persistSession/autoRefreshToken: false — this is the PUBLIC site's client. It must always
 // act as a plain anonymous visitor and must NOT pick up an admin session that happens to be
@@ -104,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }).then(r => r.json()).catch(err => ({ ok: false, error: err }));
 
     const supabasePromise = supabaseClient
-      ? supabaseClient.from('leads').insert({ name, phone }).then(r => r)
+      ? supabaseClient.from('leads').insert({ name, phone, project_id: PROJECT_ID }).then(r => r)
       : Promise.resolve({ error: 'supabase not configured' });
 
     const [tgResult, sbResult] = await Promise.all([telegramPromise, supabasePromise]);
