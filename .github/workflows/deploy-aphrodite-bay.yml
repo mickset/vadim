@@ -1,0 +1,25 @@
+name: Deploy aphrodite-bay to VPS
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'aphrodite-bay/**'
+      - '.github/workflows/deploy-aphrodite-bay.yml'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy via rsync over SSH
+        uses: burnett01/rsync-deployments@7.0.1
+        with:
+          switches: -avzr --delete
+          path: aphrodite-bay/
+          remote_path: /var/www/aphrodite-bay/
+          remote_host: 135.106.167.100
+          remote_user: root
+          remote_key: ${{ secrets.VPS_DEPLOY_KEY }}
