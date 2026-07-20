@@ -337,8 +337,9 @@
     <span class="eyebrow">Заявка</span>
     <h3>Заказать звонок</h3>
     <form id="callForm">
-      <input type="text" name="name" id="callName" placeholder="Ваше имя" required>
-      <input type="tel" name="phone" id="callPhone" placeholder="Телефон" required>
+      <input type="text" name="name" id="callName" placeholder="Ваше имя" minlength="2" required>
+      <input type="tel" name="phone" id="callPhone" placeholder="Телефон" inputmode="tel" required>
+      <p class="form-error" id="callFormError" style="display:none; color:#B3261E; font-size:13px; margin-top:-8px; margin-bottom:12px;"></p>
       <!-- Honeypot: hidden from real visitors, but simple bots that auto-fill every field
            will populate it — script.js silently drops the submission if it's non-empty. -->
       <div class="hp-field" aria-hidden="true">

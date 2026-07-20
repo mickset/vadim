@@ -67,6 +67,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const LEAD_THROTTLE_MS = 60000; // don't let the same browser submit more than once per minute
 
+  // Basic format checks. Can't detect a "nonsense" real-looking name via regex (letters are
+  // letters), but a phone number has a checkable shape, so we validate that strictly.
+  function isValidName(v) {
+    const trimmed = v.trim();
+    return trimmed.length >= 2 && /\p{L}/u.test(trimmed) && /^[\p{L}\s'-]+$/u.test(trimmed);
+  }
+  function isValidPhone(v) {
+    const digits = v.replace(/\D/g, '');
+    return digits.length >= 10 && digits.length <= 15;
+  }
+
   document.getElementById('callForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -89,6 +100,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const name = document.getElementById('callName').value.trim();
     const phone = document.getElementById('callPhone').value.trim();
     const submitBtn = document.getElementById('callSubmitBtn');
+    const errorEl = document.getElementById('callFormError');
+
+    if (!isValidName(name)) {
+      errorEl.textContent = 'Укажите, пожалуйста, настоящее имя (минимум 2 буквы).';
+      errorEl.style.display = 'block';
+      return;
+    }
+    if (!isValidPhone(phone)) {
+      errorEl.textContent = 'Проверьте номер телефона — похоже, в нём опечатка.';
+      errorEl.style.display = 'block';
+      return;
+    }
+    errorEl.style.display = 'none';
 
     const text =
       '📞 Новая заявка "Заказать звонок" с сайта Aphrodite Bay\n' +
