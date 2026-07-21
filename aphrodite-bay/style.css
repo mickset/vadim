@@ -41,10 +41,10 @@ button { font-family: inherit; }
 
 .container { max-width: var(--container); margin: 0 auto; padding: 0 32px; position: relative; }
 
-h1, h2, h3, h4 { font-weight: 700; letter-spacing: -.01em; }
+h1, h2, h3, h4 { font-weight: 600; letter-spacing: -.01em; }
 
 .eyebrow {
-  display: block; font-size: 12px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
+  display: block; font-size: 12px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase;
   color: var(--accent); margin-bottom: 18px;
 }
 .eyebrow-light { color: rgba(255,255,255,.82); }
@@ -60,7 +60,7 @@ h2.light { color: #fff; }
   display: inline-flex; align-items: center; justify-content: center;
   padding: 16px 30px; border: 1.5px solid var(--ink); border-radius: 999px;
   background: transparent; color: var(--ink);
-  font-size: 12.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+  font-size: 12.5px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
   cursor: pointer; text-decoration: none; white-space: nowrap;
   transition: background .3s var(--ease), color .3s var(--ease);
 }
@@ -69,7 +69,7 @@ h2.light { color: #fff; }
 .btn-line-light:hover { background: #fff; color: var(--ink); }
 
 .text-link {
-  display: inline-block; font-size: 13px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  display: inline-block; font-size: 13px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
   color: var(--ink); text-decoration: none; border-bottom: 1.5px solid var(--line-strong);
   padding-bottom: 4px; background: none; border-top: none; border-left: none; border-right: none; cursor: pointer;
   transition: border-color .25s ease, color .25s ease;
@@ -81,8 +81,9 @@ h2.light { color: #fff; }
 /* ---------- Header ---------- */
 .site-header {
   position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-  padding: 26px 0; transition: background .35s ease, padding .35s ease, border-color .35s ease;
-  border-bottom: 1px solid transparent;
+  padding: 26px 0; transition: background .35s ease, padding .35s ease, border-color .35s ease, backdrop-filter .35s ease;
+  border-bottom: 1px solid rgba(255,255,255,.2);
+  backdrop-filter: blur(2.5px); -webkit-backdrop-filter: blur(2.5px);
 }
 .site-header.scrolled {
   background: rgba(247,244,238,.92); backdrop-filter: blur(10px);
@@ -90,7 +91,7 @@ h2.light { color: #fff; }
 }
 .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 30px; }
 
-.logo { font-size: 15px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; text-decoration: none; color: #fff; transition: color .35s ease; }
+.logo { font-size: 15px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; text-decoration: none; color: #fff; transition: color .35s ease; }
 .site-header.scrolled .logo { color: var(--ink); }
 
 .main-nav { display: flex; gap: 30px; }
@@ -112,26 +113,23 @@ h2.light { color: #fff; }
 .site-header.scrolled .burger span { background: var(--ink); }
 
 /* ---------- Hero ---------- */
-.hero { position: relative; min-height: 100vh; display: flex; align-items: center; overflow: hidden; }
+/* Lavrushinskiy anchors its hero copy to the lower-left third of the frame
+   (left-aligned, sitting ~70% down the viewport) rather than dead center —
+   align-items:flex-end + bottom padding on .hero-content reproduces that. */
+.hero { position: relative; min-height: 100vh; display: flex; align-items: flex-end; overflow: hidden; }
 .hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .hero-scrim {
   position: absolute; inset: 0;
   background: linear-gradient(180deg, rgba(10,10,8,.35) 0%, rgba(10,10,8,.25) 40%, rgba(10,10,8,.75) 100%);
 }
-/* No top padding here — .hero already centers its content vertically via
-   flexbox (align-items:center). A one-sided padding-top was pushing the
-   headline visibly off true center without ever being needed to clear the
-   fixed header (the header is ~70-90px tall; hero content only gets that
-   close to the viewport top on very short/wide viewports where its own
-   height leaves little vertical margin either way). */
-.hero-content { position: relative; z-index: 1; }
+.hero-content { position: relative; z-index: 1; padding-bottom: 9vh; }
 .hero-content .tag {
   display: inline-block; padding: 8px 16px; border: 1px solid rgba(255,255,255,.5);
-  font-size: 11.5px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;
+  font-size: 11.5px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase;
   color: #fff; margin-bottom: 26px; border-radius: 2px;
 }
 .hero-content h1 {
-  font-size: clamp(48px, 8vw, 104px); font-weight: 800; line-height: .96; letter-spacing: -.03em;
+  font-size: clamp(48px, 8vw, 104px); font-weight: 500; line-height: .96; letter-spacing: -.03em;
   text-transform: uppercase; color: #fff; margin-bottom: 26px;
 }
 .hero-content p { font-size: 18px; color: rgba(255,255,255,.85); max-width: 480px; margin-bottom: 38px; }
@@ -143,7 +141,7 @@ h2.light { color: #fff; }
 .scroll-cue {
   position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); z-index: 1;
   display: flex; flex-direction: column; align-items: center; gap: 10px; text-decoration: none;
-  color: rgba(255,255,255,.75); font-size: 11px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase;
+  color: rgba(255,255,255,.75); font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase;
 }
 .scroll-cue i { width: 1px; height: 34px; background: rgba(255,255,255,.5); position: relative; overflow: hidden; }
 .scroll-cue i::after {
@@ -181,7 +179,7 @@ h2.light { color: #fff; }
    inside a ~200px column, which reads as small/cramped rather than as the
    bold display numbers they're meant to be. A gentler vw scale + smaller max
    fits one line at those widths without shrinking the number itself. */
-.stat strong { display: block; font-size: clamp(28px, 2.6vw, 40px); font-weight: 800; letter-spacing: -.01em; margin-bottom: 8px; white-space: nowrap; }
+.stat strong { display: block; font-size: clamp(28px, 2.6vw, 40px); font-weight: 700; letter-spacing: -.01em; margin-bottom: 8px; white-space: nowrap; }
 /* The "м²" suffix is plain text living inside the same bold .stat strong, so
    it was inheriting the full 28-40px display size — right next to the
    animated number it made the actual figure (thinner numeral glyphs) read as
@@ -192,7 +190,7 @@ h2.light { color: #fff; }
 
 .mini-stat-row { display: flex; gap: 44px; margin-top: 34px; flex-wrap: wrap; }
 .mini-stat-row div { display: flex; flex-direction: column; gap: 4px; }
-.mini-stat-row strong { font-size: 26px; font-weight: 800; }
+.mini-stat-row strong { font-size: 26px; font-weight: 700; }
 .mini-stat-row span { font-size: 12px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: .06em; }
 
 /* ---------- Full-bleed photo section (banner style) ---------- */
@@ -208,7 +206,7 @@ h2.light { color: #fff; }
 .map-frame iframe { display: block; filter: grayscale(.25) contrast(1.02); }
 .map-tag {
   position: absolute; bottom: 16px; left: 16px; background: var(--paper); border: 1px solid var(--line);
-  padding: 10px 16px; font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+  padding: 10px 16px; font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
   text-decoration: none; color: var(--ink);
 }
 
@@ -219,7 +217,7 @@ h2.light { color: #fff; }
 .slide-photo { width: 100%; aspect-ratio: 16/8; overflow: hidden; }
 .slide-photo img { width: 100%; height: 100%; object-fit: cover; }
 .slide-caption { display: flex; align-items: baseline; gap: 22px; padding-top: 32px; padding-bottom: 8px; }
-.slide-num { font-size: 14px; font-weight: 800; color: var(--accent); letter-spacing: .06em; flex-shrink: 0; }
+.slide-num { font-size: 14px; font-weight: 700; color: var(--accent); letter-spacing: .06em; flex-shrink: 0; }
 .slide-caption p { font-size: 17px; color: var(--ink); max-width: 640px; }
 .slide-caption p strong { color: var(--ink); }
 
@@ -237,7 +235,7 @@ h2.light { color: #fff; }
 .tower-toolbar { display: flex; gap: 2px; margin-bottom: 24px; }
 .segmented-btn {
   background: none; border: 1px solid var(--line-strong); color: var(--ink-muted);
-  padding: 12px 22px; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+  padding: 12px 22px; font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
   cursor: pointer; transition: background .25s ease, color .25s ease;
 }
 .segmented-btn-active, .segmented-btn:hover { background: var(--ink); color: var(--bg); border-color: var(--ink); }
@@ -248,7 +246,7 @@ h2.light { color: #fff; }
 .tower-marker {
   position: absolute; left: var(--x); top: var(--y); transform: translate(-50%, -50%);
   width: 40px; height: 46px; border: none; cursor: pointer; padding: 0;
-  background: var(--accent); color: #fff; font-size: 13px; font-weight: 800;
+  background: var(--accent); color: #fff; font-size: 13px; font-weight: 700;
   clip-path: polygon(30% 0, 100% 0, 70% 100%, 0 100%);
   display: flex; align-items: center; justify-content: center;
   transition: background .25s ease, transform .25s ease;
@@ -261,13 +259,13 @@ h2.light { color: #fff; }
   position: absolute; background: rgba(20,19,16,.92); backdrop-filter: blur(10px); color: #fff;
   padding: 22px 26px; min-width: 240px; z-index: 5;
 }
-.tower-popover-title { font-size: 20px; font-weight: 700; margin-bottom: 14px; }
+.tower-popover-title { font-size: 20px; font-weight: 600; margin-bottom: 14px; }
 .tower-popover-link {
   display: flex; align-items: center; justify-content: space-between; gap: 10px; width: 100%;
   background: none; border: none; color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; padding: 0 0 14px;
 }
 .tower-popover-divider { height: 1px; background: rgba(255,255,255,.2); margin-bottom: 14px; }
-.tower-popover-price { font-size: 15px; font-weight: 700; }
+.tower-popover-price { font-size: 15px; font-weight: 600; }
 .tower-popover-price span { color: var(--accent); }
 
 .tower-hint { font-size: 12px; color: var(--ink-faint); margin-top: 14px; }
@@ -285,7 +283,7 @@ h2.light { color: #fff; }
 .plans-modal h3 { font-size: 26px; margin-bottom: 30px; }
 
 .plans-filters { display: grid; grid-template-columns: repeat(4, 1fr); gap: 26px; margin-bottom: 26px; }
-.filter-label { display: block; font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 10px; }
+.filter-label { display: block; font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 10px; }
 .chip-row { display: flex; gap: 8px; flex-wrap: wrap; }
 .chip {
   background: none; border: 1px solid var(--line-strong); color: var(--ink-muted);
@@ -312,8 +310,8 @@ h2.light { color: #fff; }
 .plan-card-item:hover { border-color: var(--line-strong); transform: translateY(-3px); }
 .plan-card-item img { width: 100%; height: 150px; object-fit: contain; background: var(--paper); margin-bottom: 14px; }
 .plan-card-item .pc-meta { font-size: 11.5px; color: var(--ink-faint); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 6px; }
-.plan-card-item .pc-title { font-size: 14.5px; font-weight: 700; margin-bottom: 8px; }
-.plan-card-item .pc-price { font-size: 15px; font-weight: 800; color: var(--accent); }
+.plan-card-item .pc-title { font-size: 14.5px; font-weight: 600; margin-bottom: 8px; }
+.plan-card-item .pc-price { font-size: 15px; font-weight: 700; color: var(--accent); }
 .plans-empty { padding: 60px 0; text-align: center; color: var(--ink-muted); grid-column: 1/-1; }
 
 /* Lot detail view (within the same modal) */
@@ -322,9 +320,9 @@ h2.light { color: #fff; }
 .lot-info h3 { font-size: 26px; margin-bottom: 24px; }
 .lot-stat-row { display: flex; gap: 30px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 22px 0; margin-bottom: 24px; flex-wrap: wrap; }
 .lot-stat-row div { display: flex; flex-direction: column; gap: 4px; }
-.lot-stat-row strong { font-size: 18px; font-weight: 800; }
+.lot-stat-row strong { font-size: 18px; font-weight: 700; }
 .lot-stat-row span { font-size: 11.5px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: .05em; }
-.lot-price { font-size: 28px; font-weight: 800; margin-bottom: 4px; }
+.lot-price { font-size: 28px; font-weight: 700; margin-bottom: 4px; }
 .lot-price-per-m2 { font-size: 13px; color: var(--ink-muted); margin-bottom: 26px; }
 
 /* ---------- Gallery strip ---------- */
@@ -337,7 +335,7 @@ h2.light { color: #fff; }
 /* ---------- Contacts ---------- */
 .contact-lines { margin: 22px 0; }
 .contact-lines p { margin-bottom: 8px; }
-.contact-lines a { text-decoration: none; font-weight: 700; font-size: 17px; }
+.contact-lines a { text-decoration: none; font-weight: 600; font-size: 17px; }
 .contact-lines .muted a { color: var(--ink-muted); font-weight: 500; font-size: 15px; }
 .contact-meta { margin-top: 30px; padding-top: 24px; border-top: 1px solid var(--line); }
 .contact-meta p { font-size: 14px; color: var(--ink-muted); margin-bottom: 6px; max-width: none; }
