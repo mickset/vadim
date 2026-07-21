@@ -14,7 +14,7 @@
   --line-strong: rgba(27,26,23,.32);
   --accent: #7C6A4E;
   --paper: #FFFFFF;
-  --font: "Manrope", -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --font: "Golos Text", -apple-system, "Helvetica Neue", Arial, sans-serif;
   --ease: cubic-bezier(.16,.84,.44,1);
   --container: 1240px;
 }
