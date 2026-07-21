@@ -43,11 +43,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   toTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-  /* ---------- Mobile burger menu ---------- */
+  /* ---------- Full-screen nav menu ---------- */
   const burgerBtn = document.getElementById('burgerBtn');
   const mainNav = document.getElementById('mainNav');
-  burgerBtn.addEventListener('click', () => mainNav.classList.toggle('open'));
-  mainNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mainNav.classList.remove('open')));
+  function setNavOpen(open) {
+    mainNav.classList.toggle('open', open);
+    burgerBtn.classList.toggle('open', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
+  burgerBtn.addEventListener('click', () => setNavOpen(!mainNav.classList.contains('open')));
+  mainNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setNavOpen(false)));
 
   /* ---------- Call modal ---------- */
   const modalOverlay = document.getElementById('callModalOverlay');
