@@ -130,7 +130,7 @@ h2.light { color: #fff; }
    right; sits just under the header so the header's logo/CTA/phone stay
    visible and usable while the menu is open. */
 .main-nav {
-  display: none; position: fixed; inset: 0; z-index: 1500;
+  display: none; position: fixed; inset: 0; z-index: 999;
   background: var(--ink);
 }
 .main-nav.open { display: flex; }
