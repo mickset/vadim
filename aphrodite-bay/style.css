@@ -89,18 +89,19 @@ h2.light { color: #fff; }
   background: rgba(247,244,238,.92); backdrop-filter: blur(10px);
   padding: 16px 0; border-bottom-color: var(--line);
 }
-.header-inner { display: flex; align-items: center; justify-content: space-between; gap: 30px; }
+/* Lavrushinskiy centers its logo dead-center regardless of how wide the left/right
+   header groups are — a 3-column grid (not flex space-between) is what actually
+   guarantees that, since the middle column is sized independently of its neighbors. */
+.header-inner { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; column-gap: 20px; }
 
-.logo { font-size: 15px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; text-decoration: none; color: #fff; transition: color .35s ease; }
+.header-left { display: flex; align-items: center; justify-self: start; }
+
+.logo { justify-self: center; font-size: 15px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; text-decoration: none; color: #fff; transition: color .35s ease; }
 .site-header.scrolled .logo { color: var(--ink); }
 
-.main-nav { display: flex; gap: 30px; }
-.main-nav a { text-decoration: none; color: rgba(255,255,255,.85); font-size: 12.5px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; transition: color .3s ease, opacity .2s ease; }
-.main-nav a:hover { opacity: .7; }
-.site-header.scrolled .main-nav a { color: var(--ink-muted); }
-.site-header.scrolled .main-nav a:hover { color: var(--ink); }
-
-.header-actions { display: flex; align-items: center; gap: 22px; }
+/* Real navigation lives behind the burger (see .main-nav below) — the visible
+   bar itself only ever shows burger / logo / CTA+phone, same as the reference. */
+.header-actions { display: flex; align-items: center; gap: 22px; justify-self: end; }
 .header-actions .phone { text-decoration: none; color: rgba(255,255,255,.9); font-size: 13.5px; font-weight: 600; transition: color .35s ease; }
 .site-header.scrolled .header-actions .phone { color: var(--ink); }
 .site-header .btn-line { border-color: rgba(255,255,255,.7); color: #fff; padding: 12px 22px; }
@@ -108,9 +109,20 @@ h2.light { color: #fff; }
 .site-header.scrolled .btn-line:hover { background: var(--ink); color: var(--bg); }
 .site-header .btn-line:hover { background: #fff; color: var(--ink); }
 
-.burger { display: none; flex-direction: column; justify-content: center; gap: 5px; width: 34px; height: 34px; background: none; border: none; cursor: pointer; }
+.burger { display: flex; flex-direction: column; justify-content: center; gap: 5px; width: 34px; height: 34px; background: none; border: none; cursor: pointer; }
 .burger span { display: block; width: 22px; height: 1.5px; background: #fff; transition: background .3s ease; }
 .site-header.scrolled .burger span { background: var(--ink); }
+
+/* Nav is a dropdown panel triggered by the burger at every viewport width —
+   Lavrushinskiy never shows nav links inline in the bar itself. */
+.main-nav {
+  display: none; position: absolute; top: 100%; left: 0; right: 0;
+  flex-direction: column; gap: 2px; background: var(--paper); border-bottom: 1px solid var(--line);
+  padding: 16px 32px 22px;
+}
+.main-nav.open { display: flex; }
+.main-nav a { color: var(--ink); text-decoration: none; font-size: 12.5px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; padding: 12px 0; border-bottom: 1px solid var(--line); transition: color .2s ease; }
+.main-nav a:hover { color: var(--accent); }
 
 /* ---------- Hero ---------- */
 /* Lavrushinskiy anchors its hero copy to the lower-left third of the frame
@@ -418,14 +430,6 @@ h2.light { color: #fff; }
   .plans-filters { grid-template-columns: repeat(2, 1fr); }
   .lot-body { grid-template-columns: 1fr; }
   .plans-grid { grid-template-columns: repeat(2, 1fr); }
-  .main-nav {
-    display: none; position: absolute; top: 100%; left: 0; right: 0;
-    flex-direction: column; gap: 2px; background: var(--paper); border-bottom: 1px solid var(--line);
-    padding: 16px 32px 22px;
-  }
-  .main-nav.open { display: flex; }
-  .main-nav a { color: var(--ink) !important; padding: 12px 0; border-bottom: 1px solid var(--line); }
-  .burger { display: flex; }
   .header-actions .phone { display: none; }
 }
 

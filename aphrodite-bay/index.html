@@ -7,14 +7,25 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=3">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 </head>
 <body>
 
 <header class="site-header" id="siteHeader">
   <div class="container header-inner">
+    <div class="header-left">
+      <button class="burger" id="burgerBtn" aria-label="Меню">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
     <a href="./" class="logo">Aphrodite Bay</a>
+
+    <div class="header-actions">
+      <button class="btn-line" id="ctaHeaderBtn" type="button">Заказать звонок</button>
+      <a class="phone" href="tel:+35726000111">+357 26 000 111</a>
+    </div>
 
     <nav class="main-nav" id="mainNav">
       <a href="#o-komplekse">О проекте</a>
@@ -23,14 +34,6 @@
       <a href="#preimushchestva">Преимущества</a>
       <a href="#o-gorode">О Пафосе</a>
     </nav>
-
-    <div class="header-actions">
-      <a class="phone" href="tel:+35726000111">+357 26 000 111</a>
-      <button class="btn-line" id="ctaHeaderBtn" type="button">Заказать звонок</button>
-      <button class="burger" id="burgerBtn" aria-label="Меню">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
   </div>
 </header>
 
@@ -41,18 +44,8 @@
     <img class="hero-bg" src="https://images.unsplash.com/photo-1778053065303-73cfcaa79474?w=1920&q=80&auto=format&fit=crop" alt="">
     <div class="hero-scrim"></div>
     <div class="container hero-content">
-      <span class="tag hero-anim" style="--d:0s">Пафос, Кипр · Первая линия моря</span>
-      <h1 class="hero-anim" style="--d:.1s">Aphrodite<br>Bay</h1>
-      <p class="hero-anim" style="--d:.22s">Резиденция с видом на Средиземное море — в 50 метрах от воды, в тихом квартале на набережной Пафоса.</p>
-      <div class="hero-actions hero-anim" style="--d:.34s">
-        <a href="#planirovki" class="btn-line btn-line-light">Выбрать квартиру</a>
-        <button class="text-link text-link-light" id="ctaHeroBtn" type="button">Заказать звонок</button>
-      </div>
+      <h1 class="hero-anim" style="--d:.1s">Резиденция в 50 метрах от моря<br>на набережной Пафоса</h1>
     </div>
-    <a href="#o-komplekse" class="scroll-cue">
-      <span>Смотреть</span>
-      <i></i>
-    </a>
   </section>
 
   <!-- O PROEKTE -->
