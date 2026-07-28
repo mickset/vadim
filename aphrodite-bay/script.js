@@ -54,7 +54,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const heroVideo = document.getElementById('heroVideo');
   const heroSection = document.getElementById('hero');
   if (heroVideo && heroSection) {
+    // Stopping exactly at `duration` is what causes the black flash — right at
+    // that boundary there's no decoded frame for the browser to show. Treat
+    // (duration - END_EPSILON) as the "real" end everywhere (intro and scrub
+    // alike) so playback always rests on an actual frame.
+    const END_EPSILON = 0.08;
     let duration = 0;
+    let safeEnd = 0;
     let heroHeight = heroSection.offsetHeight;
     let ticking = false;
     let introDone = false;
@@ -84,17 +90,24 @@ document.addEventListener('DOMContentLoaded', () => {
       ticking = false;
       if (!introDone || !duration) return;
       const progress = Math.min(Math.max(window.scrollY / heroHeight, 0), 1);
-      seekTo(progress * duration);
+      seekTo(progress * safeEnd);
     }
 
     heroVideo.addEventListener('loadedmetadata', () => {
       duration = heroVideo.duration || 0;
+      safeEnd = Math.max(duration - END_EPSILON, 0);
     });
 
     // Intro: play once, start to finish, at normal speed — untouched by scroll.
-    heroVideo.addEventListener('ended', () => {
-      introDone = true;
-      scrubToScroll(); // pick up wherever the user has already scrolled to
+    // Watched via timeupdate (not 'ended') so it stops just short of the true
+    // end instead of running into the black-frame boundary.
+    heroVideo.addEventListener('timeupdate', () => {
+      if (!introDone && safeEnd && heroVideo.currentTime >= safeEnd) {
+        heroVideo.pause();
+        heroVideo.currentTime = safeEnd;
+        introDone = true;
+        scrubToScroll(); // pick up wherever the user has already scrolled to
+      }
     });
     heroVideo.play().catch(() => {
       // Autoplay blocked (rare for a muted video) — fall back straight to
