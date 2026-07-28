@@ -51,6 +51,17 @@ document.addEventListener('DOMContentLoaded', () => {
         directly to currentTime, so scrolling back up plays the clip in
         reverse (and scrolling back down plays it forward again), holding at
         both ends since the mapped time is clamped to [0, duration]. */
+  /* NOTE (kept intentionally, this is a tech-test build, not production):
+     hero-video.mp4 is currently a placeholder — off-theme AI-generated clip,
+     just here to prove out the scroll-scrub mechanic. Current approach seeks
+     an all-intra (every-frame-keyframe) H.264 MP4, which works but is heavier
+     than it needs to be. WHEN THIS BECOMES A REAL PRODUCTION TASK: switch to
+     the canvas + image-sequence technique instead (extract ~12-15fps of
+     WebP/JPEG frames, preload them, draw the frame matching scroll position
+     onto a <canvas> — no video decode/seek cost at all, smoother in every
+     browser, and total payload is usually smaller too). This is how
+     Apple-style scrollytelling sites do it — don't keep scrubbing a <video>
+     for the real build. */
   const heroVideo = document.getElementById('heroVideo');
   const heroSection = document.getElementById('hero');
   if (heroVideo && heroSection) {
