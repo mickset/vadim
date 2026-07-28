@@ -57,12 +57,33 @@ document.addEventListener('DOMContentLoaded', () => {
     let duration = 0;
     let heroHeight = heroSection.offsetHeight;
     let ticking = false;
+    // Setting currentTime again before the previous seek has finished is what
+    // actually causes the choppiness on fast scrolls — the decoder queues up
+    // seeks faster than it can resolve them. Track in-flight seeks and only
+    // ever keep the LATEST requested position, applied the moment the video
+    // is free again.
+    let seeking = false;
+    let pendingTime = null;
+
+    function seekTo(t) {
+      if (seeking) { pendingTime = t; return; }
+      seeking = true;
+      heroVideo.currentTime = t;
+    }
+    heroVideo.addEventListener('seeked', () => {
+      seeking = false;
+      if (pendingTime !== null) {
+        const t = pendingTime;
+        pendingTime = null;
+        seekTo(t);
+      }
+    });
 
     function scrubToScroll() {
       ticking = false;
       if (!duration) return;
       const progress = Math.min(Math.max(window.scrollY / heroHeight, 0), 1);
-      heroVideo.currentTime = progress * duration;
+      seekTo(progress * duration);
     }
 
     heroVideo.addEventListener('loadedmetadata', () => {
