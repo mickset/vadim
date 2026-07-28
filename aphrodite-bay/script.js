@@ -43,22 +43,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
   toTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-  /* ---------- Hero video: scroll-scrubbed playback ----------
-     No autoplay/loop here — the video's currentTime is driven directly by
-     scroll position while the hero is on screen. Scrolling down plays it
-     forward, scrolling back up plays it in reverse, and it naturally holds
-     ("stops") at frame 0 and at the last frame since currentTime is clamped
-     to [0, duration]. This needs the video's own duration (available only
-     after 'loadedmetadata'), and re-reads hero.offsetHeight on resize since
-     that's the scroll distance the whole clip is scrubbed across. */
+  /* ---------- Hero video: intro play-through, then scroll-scrubbed ----------
+     Two phases:
+     1. On load the video just plays forward at normal speed, once, and holds
+        on the last frame when it ends (no scroll involvement at all yet).
+     2. Once that intro has finished, scroll takes over: scroll position maps
+        directly to currentTime, so scrolling back up plays the clip in
+        reverse (and scrolling back down plays it forward again), holding at
+        both ends since the mapped time is clamped to [0, duration]. */
   const heroVideo = document.getElementById('heroVideo');
   const heroSection = document.getElementById('hero');
   if (heroVideo && heroSection) {
     let duration = 0;
     let heroHeight = heroSection.offsetHeight;
     let ticking = false;
+    let introDone = false;
     // Setting currentTime again before the previous seek has finished is what
-    // actually causes the choppiness on fast scrolls — the decoder queues up
+    // actually causes choppiness on fast scrolls — the decoder queues up
     // seeks faster than it can resolve them. Track in-flight seeks and only
     // ever keep the LATEST requested position, applied the moment the video
     // is free again.
@@ -81,14 +82,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function scrubToScroll() {
       ticking = false;
-      if (!duration) return;
+      if (!introDone || !duration) return;
       const progress = Math.min(Math.max(window.scrollY / heroHeight, 0), 1);
       seekTo(progress * duration);
     }
 
     heroVideo.addEventListener('loadedmetadata', () => {
       duration = heroVideo.duration || 0;
-      scrubToScroll();
+    });
+
+    // Intro: play once, start to finish, at normal speed — untouched by scroll.
+    heroVideo.addEventListener('ended', () => {
+      introDone = true;
+      scrubToScroll(); // pick up wherever the user has already scrolled to
+    });
+    heroVideo.play().catch(() => {
+      // Autoplay blocked (rare for a muted video) — fall back straight to
+      // scroll-scrub mode so the hero still responds to something.
+      introDone = true;
     });
 
     window.addEventListener('scroll', () => {
