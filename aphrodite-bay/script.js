@@ -43,6 +43,43 @@ document.addEventListener('DOMContentLoaded', () => {
 
   toTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
+  /* ---------- Hero video: scroll-scrubbed playback ----------
+     No autoplay/loop here — the video's currentTime is driven directly by
+     scroll position while the hero is on screen. Scrolling down plays it
+     forward, scrolling back up plays it in reverse, and it naturally holds
+     ("stops") at frame 0 and at the last frame since currentTime is clamped
+     to [0, duration]. This needs the video's own duration (available only
+     after 'loadedmetadata'), and re-reads hero.offsetHeight on resize since
+     that's the scroll distance the whole clip is scrubbed across. */
+  const heroVideo = document.getElementById('heroVideo');
+  const heroSection = document.getElementById('hero');
+  if (heroVideo && heroSection) {
+    let duration = 0;
+    let heroHeight = heroSection.offsetHeight;
+    let ticking = false;
+
+    function scrubToScroll() {
+      ticking = false;
+      if (!duration) return;
+      const progress = Math.min(Math.max(window.scrollY / heroHeight, 0), 1);
+      heroVideo.currentTime = progress * duration;
+    }
+
+    heroVideo.addEventListener('loadedmetadata', () => {
+      duration = heroVideo.duration || 0;
+      scrubToScroll();
+    });
+
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(scrubToScroll);
+      }
+    });
+
+    window.addEventListener('resize', () => { heroHeight = heroSection.offsetHeight; });
+  }
+
   /* ---------- Full-screen nav menu ---------- */
   const burgerBtn = document.getElementById('burgerBtn');
   const mainNav = document.getElementById('mainNav');
