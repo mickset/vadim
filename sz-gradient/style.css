@@ -54,29 +54,29 @@ button { font-family: inherit; }
 }
 
 .nav-pill {
-  display: inline-flex; align-items: center; padding: 9px 18px; border-radius: 999px;
-  border: 1.5px solid var(--ink); color: var(--ink); font-size: 13.5px; font-weight: 500;
-  text-decoration: none; white-space: nowrap;
+  display: inline-flex; align-items: center; padding: 4px 14px; border-radius: 999px;
+  border: 1.5px solid var(--ink); color: var(--ink); font-size: 15px; font-weight: 400;
+  text-decoration: none; white-space: nowrap; line-height: 20px;
   transition: background .25s ease, color .25s ease;
 }
 .nav-pill:hover { background: var(--ink); color: #fff; }
 
 .main-menu { justify-self: center; display: flex; align-items: center; gap: 42px; }
-.main-menu a { text-decoration: none; color: var(--ink); font-size: 14px; font-weight: 500; white-space: nowrap; transition: opacity .2s ease; }
+.main-menu a { text-decoration: none; color: var(--ink); font-size: 15px; font-weight: 500; white-space: nowrap; transition: opacity .2s ease; }
 .main-menu a:hover { opacity: .55; }
 
-.header-actions { display: flex; align-items: center; gap: 14px; justify-self: end; }
+.header-actions { display: flex; align-items: center; gap: 20px; justify-self: end; }
 .btn-green {
   display: inline-flex; align-items: center; justify-content: center; white-space: nowrap;
-  padding: 9px 22px; border-radius: 999px; border: none; cursor: pointer;
-  background: var(--green); color: #fff; font-size: 13.5px; font-weight: 500; font-family: inherit;
+  padding: 4px 12px; border-radius: 999px; border: none; cursor: pointer; line-height: 20px;
+  background: var(--green); color: #fff; font-size: 15px; font-weight: 400; font-family: inherit;
   transition: background .25s ease;
 }
 .btn-green:hover { background: #029640; }
 .phone-pill {
-  display: inline-flex; align-items: center; padding: 9px 20px; border-radius: 999px;
-  border: 1.5px solid var(--ink); color: var(--ink); font-size: 13.5px; font-weight: 500;
-  text-decoration: none; white-space: nowrap;
+  display: inline-flex; align-items: center; padding: 4px 16px; border-radius: 999px;
+  border: 1.5px solid var(--ink); color: var(--ink); font-size: 15px; font-weight: 400;
+  text-decoration: none; white-space: nowrap; line-height: 20px;
 }
 
 @media (max-width: 1100px) {
@@ -130,12 +130,16 @@ button { font-family: inherit; }
 .hero-headline .line-2 { color: #DDD7CB; }
 
 .hero-buildings {
-  position: absolute; left: 0; right: 0; bottom: -4%; display: flex; justify-content: center;
+  position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: center; align-items: flex-end;
   z-index: 3; pointer-events: none; line-height: 0;
   opacity: 0; transform: translateY(50px) scale(.94);
   animation: heroBuildingsCatchUp 1.8s var(--ease) forwards; animation-delay: 1.2s;
 }
-.hero-buildings img { display: block; width: min(1100px, 74vw); height: auto; }
+/* Sized by HEIGHT (not width) — the building must only occupy the bottom
+   portion of the hero and just graze "Керчи", not swallow the whole
+   headline. Sizing by width alone (as the previous version did) let a tall
+   source photo balloon to fill almost the entire viewport height. */
+.hero-buildings img { display: block; width: auto; height: min(56vh, 620px); max-width: 92vw; object-fit: contain; }
 @keyframes heroBuildingsCatchUp { to { opacity: 1; transform: translateY(0) scale(1); } }
 
 .hero-bottom-row {
