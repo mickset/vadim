@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Жемчужина Керчи — СЗ Градиент</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=5">
+</head>
+<body>
+
+<header class="site-header" id="siteHeader">
+  <div class="container header-inner">
+    <div class="header-left">
+      <a href="./" class="logo">
+        <span class="logo-icon" aria-hidden="true"><span></span><span></span></span>
+        <span class="logo-text">СЗ Градиент</span>
+      </a>
+      <a href="#planirovki" class="nav-pill">выбрать квартиру</a>
+    </div>
+
+    <nav class="main-menu">
+      <a href="#o-proekte">О проекте</a>
+      <a href="#lokatsiya">Локация</a>
+      <a href="#planirovki">Планировки</a>
+      <a href="#preimushchestva">Преимущества</a>
+      <a href="#o-gorode">О городе</a>
+    </nav>
+
+    <div class="header-actions">
+      <button class="btn-green" id="ctaHeaderBtn" type="button">связаться</button>
+      <a class="phone-pill" href="tel:+79780520008">+7 978 052 00 08</a>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- HERO — "Жемчужина Керчи". Built from the Figma frames "1" / "2" / "1920"
+       on Page 2: frame 1 = entrance state (headline lower, background framed
+       wider showing the bridge), frame 2 = settled state (headline higher,
+       background zoomed in, building overlapping the bottom of "Керчи").
+       Sequence: headline fades in + rises slightly at its frame-1 spot ->
+       ~1s later the background zooms in while the headline moves up to its
+       frame-2 spot -> the building rises to catch up and slightly overlaps
+       "Керчи" -> the bottom CTA row and caption fade in last. -->
+  <section class="hero" id="hero">
+    <div class="hero-sky" aria-hidden="true"></div>
+
+    <!-- NOTE: Figma's frame uses one seamless photo render (sea + bridge +
+         building baked together) — I couldn't pull that exact file via the
+         API (no REST token, desktop-bridge only), so this reuses the two
+         separate assets already in the project (hero-bridge.jpg for the
+         sea/bridge, hero-building.webp for the building) and times them to
+         reproduce the same choreography. Swap hero-bridge.jpg for the actual
+         Figma export later for a pixel-perfect match. -->
+    <div class="hero-buildings" aria-hidden="true">
+      <img src="hero-building.webp" alt="">
+    </div>
+
+    <div class="hero-headline-wrap">
+      <p class="hero-eyebrow">Комплекс видовых квартир в городе Керчь</p>
+      <h1 class="hero-headline"><span class="line-1">Жемчужина</span><span class="line-2">Керчи</span></h1>
+    </div>
+
+    <div class="container hero-bottom-row">
+      <div class="hero-ctas">
+        <button class="btn-pill-green" id="ctaHeroBtn" type="button">Выбрать квартиру</button>
+        <button class="btn-pill-glass" id="ctaSpecsBtn" type="button">Характеристики дома</button>
+      </div>
+      <p class="hero-caption">Ваш идеальный дом<br>у Чёрного моря</p>
+    </div>
+  </section>
+
+</main>
+
+<script src="script.js?v=5"></script>
+</body>
+</html>

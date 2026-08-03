@@ -1,0 +1,167 @@
+/* =========================================================
+   SZ GRADIENT — "Жемчужина Керчи" hero (v5)
+   Rebuilt to match the Figma frames "1" / "2" / "1920" on Page 2. The
+   headline is "Жемчужина Керчи" (the marketing name); "СЗ Градиент" is only
+   the developer's small logo in the header — that's why the earlier giant
+   "Градиент" wordmark experiments live in the header now, not the hero.
+   ========================================================= */
+
+:root {
+  --bg: #FFFFFF;
+  --ink: #1C1A16;
+  --line: rgba(28,26,22,.12);
+  --line-strong: rgba(28,26,22,.26);
+  --green: #02B84F;
+  --font-display: "Unbounded", -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Manrope", -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --ease: cubic-bezier(.16,.84,.44,1);
+  --container: 1600px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--font-body); background: var(--bg); color: var(--ink); line-height: 1.6; overflow-x: hidden; font-size: 16px; }
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+button { font-family: inherit; }
+
+.container { max-width: var(--container); margin: 0 auto; padding: 0 32px; position: relative; }
+
+/* ---------- Header ---------- */
+.site-header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  height: 64px; display: flex; align-items: center;
+  background: #fff; border-bottom: 1px solid var(--line);
+}
+.header-inner { width: 100%; max-width: 1872px; margin: 0 auto; padding: 0 24px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; column-gap: 20px; }
+
+.header-left { display: flex; align-items: center; gap: 14px; justify-self: start; }
+
+.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.logo-icon { display: flex; flex-direction: column; gap: 4px; width: 20px; }
+.logo-icon span { display: block; height: 2px; background: #342B1F; border-radius: 1px; }
+.logo-icon span:first-child { width: 20px; }
+.logo-icon span:last-child { width: 16px; }
+.logo-text {
+  font-family: var(--font-display); font-weight: 500; font-size: clamp(12px, .83vw, 16px);
+  letter-spacing: .04em; text-transform: uppercase;
+  background: linear-gradient(135deg, #292B30 0%, #494F5D 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+
+.nav-pill {
+  display: inline-flex; align-items: center; padding: 9px 18px; border-radius: 999px;
+  border: 1.5px solid var(--ink); color: var(--ink); font-size: 13.5px; font-weight: 500;
+  text-decoration: none; white-space: nowrap;
+  transition: background .25s ease, color .25s ease;
+}
+.nav-pill:hover { background: var(--ink); color: #fff; }
+
+.main-menu { justify-self: center; display: flex; align-items: center; gap: 42px; }
+.main-menu a { text-decoration: none; color: var(--ink); font-size: 14px; font-weight: 500; white-space: nowrap; transition: opacity .2s ease; }
+.main-menu a:hover { opacity: .55; }
+
+.header-actions { display: flex; align-items: center; gap: 14px; justify-self: end; }
+.btn-green {
+  display: inline-flex; align-items: center; justify-content: center; white-space: nowrap;
+  padding: 9px 22px; border-radius: 999px; border: none; cursor: pointer;
+  background: var(--green); color: #fff; font-size: 13.5px; font-weight: 500; font-family: inherit;
+  transition: background .25s ease;
+}
+.btn-green:hover { background: #029640; }
+.phone-pill {
+  display: inline-flex; align-items: center; padding: 9px 20px; border-radius: 999px;
+  border: 1.5px solid var(--ink); color: var(--ink); font-size: 13.5px; font-weight: 500;
+  text-decoration: none; white-space: nowrap;
+}
+
+@media (max-width: 1100px) {
+  .main-menu { display: none; }
+  .header-inner { grid-template-columns: 1fr auto; }
+  .header-actions .phone-pill { display: none; }
+}
+@media (max-width: 640px) {
+  .header-left .nav-pill { display: none; }
+}
+
+/* ---------- Hero ----------
+   Layering (back to front): sky/sea photo -> giant headline -> foreground
+   building render (rises to slightly overlap the bottom of "Керчи") ->
+   bottom row (CTAs + caption).
+   Each element's `transform`/`top` is only ever driven by ONE animation, so
+   entrance + later repositioning never fight each other on the same
+   property (that caused jitter in an earlier build). */
+.hero { position: relative; height: 100vh; min-height: 640px; overflow: hidden; background: #274056; }
+
+.hero-sky {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  background-image: url("hero-bridge.jpg");
+  background-size: cover; background-position: center 55%;
+  transform-origin: 60% 75%;
+  animation: heroBgZoom 1.6s var(--ease) forwards; animation-delay: 1s;
+}
+@keyframes heroBgZoom { from { transform: scale(1); } to { transform: scale(1.32); } }
+
+.hero-headline-wrap {
+  position: absolute; top: 25.7%; left: 0; right: 0; z-index: 2; text-align: center; padding: 0 24px;
+  opacity: 0; transform: translateY(24px);
+  animation:
+    heroFadeIn .9s var(--ease) forwards,
+    heroHeadlineRise 1.4s var(--ease) forwards;
+  animation-delay: 0s, 1s;
+}
+@keyframes heroFadeIn { to { opacity: 1; transform: translateY(0); } }
+@keyframes heroHeadlineRise { from { top: 25.7%; } to { top: 12.6%; } }
+
+.hero-eyebrow {
+  font-family: var(--font-body); font-weight: 800; font-size: clamp(11px, .83vw, 16px);
+  letter-spacing: .12em; text-transform: uppercase; color: #fff; margin-bottom: 16px;
+}
+.hero-headline {
+  font-family: var(--font-display); font-weight: 500; font-size: clamp(42px, 6.25vw, 120px);
+  line-height: .95; text-transform: uppercase; letter-spacing: 0;
+}
+.hero-headline .line-1, .hero-headline .line-2 { display: block; }
+.hero-headline .line-1 { color: #fff; }
+.hero-headline .line-2 { color: #DDD7CB; }
+
+.hero-buildings {
+  position: absolute; left: 0; right: 0; bottom: -4%; display: flex; justify-content: center;
+  z-index: 3; pointer-events: none; line-height: 0;
+  opacity: 0; transform: translateY(50px) scale(.94);
+  animation: heroBuildingsCatchUp 1.8s var(--ease) forwards; animation-delay: 1.2s;
+}
+.hero-buildings img { display: block; width: min(1100px, 74vw); height: auto; }
+@keyframes heroBuildingsCatchUp { to { opacity: 1; transform: translateY(0) scale(1); } }
+
+.hero-bottom-row {
+  position: absolute; left: 0; right: 0; bottom: 64px; z-index: 4;
+  display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap;
+  opacity: 0; transform: translateY(18px);
+  animation: heroFadeIn .9s var(--ease) forwards; animation-delay: 3s;
+}
+.hero-ctas { display: flex; gap: 20px; flex-wrap: wrap; }
+.btn-pill-green, .btn-pill-glass {
+  display: inline-flex; align-items: center; justify-content: center; white-space: nowrap;
+  padding: 16px 32px; border-radius: 999px; border: none; cursor: pointer; font-family: inherit;
+  font-weight: 700; font-size: clamp(13px, 1.04vw, 20px); letter-spacing: .02em; text-transform: uppercase;
+  color: #fff; transition: background .25s ease;
+}
+.btn-pill-green { background: rgba(2,184,79,.6); }
+.btn-pill-green:hover { background: rgba(2,184,79,.8); }
+.btn-pill-glass { background: rgba(255,255,255,.12); }
+.btn-pill-glass:hover { background: rgba(255,255,255,.2); }
+
+.hero-caption {
+  font-family: var(--font-body); font-weight: 600; font-size: clamp(18px, 2.19vw, 42px);
+  line-height: 1.1; color: #fff; text-align: right; text-shadow: 0 2px 14px rgba(0,0,0,.35);
+}
+
+@media (max-width: 768px) {
+  .hero-bottom-row { flex-direction: column; align-items: flex-start; bottom: 40px; }
+  .hero-caption { text-align: left; }
+}
