@@ -51,29 +51,26 @@ button {
 .logo-icon span { display: block; height: 2px; background: #342B1F; border-radius: 1px; }
 .logo-icon span:first-child { width: 20px; }
 .logo-icon span:last-child { width: 16px; }
+/* Enlarged per the latest Figma edit: fontSize 16 -> 20 (measured at the
+   1920 reference), so clamp scales to match: 20/1920*100 = 1.04vw. */
 .logo-text {
-  font-family: var(--font-display); font-weight: 500; font-size: clamp(12px, .83vw, 16px);
+  font-family: var(--font-display); font-weight: 500; font-size: clamp(14px, 1.04vw, 20px);
   letter-spacing: .04em; text-transform: uppercase;
   background: linear-gradient(135deg, #292B30 0%, #494F5D 100%);
   -webkit-background-clip: text; background-clip: text; color: transparent;
 }
-
-.nav-pill {
-  display: inline-flex; align-items: center; padding: 4px 14px; border-radius: 999px;
-  border: 1.5px solid var(--ink); color: var(--ink); font-size: 15px; font-weight: 400;
-  text-decoration: none; white-space: nowrap; line-height: 20px;
-  transition: background .25s ease, color .25s ease;
-}
-.nav-pill:hover { background: var(--ink); color: #fff; }
 
 .main-menu { justify-self: center; display: flex; align-items: center; gap: 42px; }
 .main-menu a { text-decoration: none; color: var(--ink); font-size: 15px; font-weight: 500; white-space: nowrap; transition: opacity .2s ease; }
 .main-menu a:hover { opacity: .55; }
 
 .header-actions { display: flex; align-items: center; gap: 20px; justify-self: end; }
+/* Figma: the header green button used to be "связаться" — now it's
+   "выбрать квартиру", fully opaque green (no transparency, unlike the hero
+   pills), padding 3px/12px measured directly off the node. */
 .btn-green {
   display: inline-flex; align-items: center; justify-content: center; white-space: nowrap;
-  padding: 4px 12px; border-radius: 999px; border: none; cursor: pointer; line-height: 20px;
+  padding: 3px 12px; border-radius: 999px; border: none; cursor: pointer; line-height: 20px;
   background: var(--green); color: #fff; font-size: 15px; font-weight: 400; font-family: inherit;
   transition: background .25s ease;
 }
@@ -88,9 +85,6 @@ button {
   .main-menu { display: none; }
   .header-inner { grid-template-columns: 1fr auto; }
   .header-actions .phone-pill { display: none; }
-}
-@media (max-width: 640px) {
-  .header-left .nav-pill { display: none; }
 }
 
 /* ---------- Hero ----------
@@ -147,12 +141,12 @@ button {
 /* ---------- Fixed CTA bar ----------
    "должны быть всегда в одном и том же месте даже при скролле" — a plain
    `position: fixed` bar living outside <main>, so it never scrolls with the
-   hero. Offsets match the Figma gap between the CTAs/phone pill and the
-   bottom of the photo (5.94vw / 3.13vw margins), clamped so it stays sane
-   on very small/very large screens. No entrance animation — it's meant to
-   just always be there. */
+   hero. Bottom offset matches the left/right side margin exactly (same
+   clamp(20px, 3.13vw, 60px) on all three sides), per feedback that the bar
+   sat too close to the bottom relative to its side spacing. No entrance
+   animation — it's meant to just always be there. */
 .fixed-cta-bar {
-  position: fixed; left: 0; right: 0; bottom: clamp(20px, 5.94vw, 90px); z-index: 500;
+  position: fixed; left: 0; right: 0; bottom: clamp(20px, 3.13vw, 60px); z-index: 500;
   display: flex; align-items: center; justify-content: space-between;
   padding: 0 clamp(20px, 3.13vw, 60px); pointer-events: none;
 }
