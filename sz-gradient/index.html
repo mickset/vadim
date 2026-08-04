@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=6">
+<link rel="stylesheet" href="style.css?v=10">
 </head>
 <body>
 
@@ -38,44 +38,42 @@
 
 <main>
 
-  <!-- HERO — "Жемчужина Керчи". Built from the Figma frames "1" / "2" / "1920"
-       on Page 2: frame 1 = entrance state (headline lower, background framed
-       wider showing the bridge), frame 2 = settled state (headline higher,
-       background zoomed in, building overlapping the bottom of "Керчи").
-       Sequence: headline fades in + rises slightly at its frame-1 spot ->
-       ~1s later the background zooms in while the headline moves up to its
-       frame-2 spot -> the building rises to catch up and slightly overlaps
-       "Керчи" -> the bottom CTA row and caption fade in last. -->
+  <!-- HERO — rebuilt from Figma frame "1920 new" (Page 2, node 1129:1121).
+       Single static photo (hero-photo.webp, native 2198x1200 — the exact
+       "image 33" asset), no animation on it at all. Only the headline block
+       animates (soft fade + rise). Sized/positioned with vw units derived
+       from the 1920px reference frame (left:-14.32vw top:0 width:114.48vw
+       height:62.5vw) so it scales without distortion at any viewport width;
+       .hero's own height is locked to 62.5vw (matches the photo's aspect
+       ratio exactly), so everything positioned inside it via % stays
+       proportional too. -->
   <section class="hero" id="hero">
-    <div class="hero-sky" aria-hidden="true"></div>
-
-    <!-- NOTE: Figma's frame uses one seamless photo render (sea + bridge +
-         building baked together) — I couldn't pull that exact file via the
-         API (no REST token, desktop-bridge only), so this reuses the two
-         separate assets already in the project (hero-bridge.jpg for the
-         sea/bridge, hero-building.webp for the building) and times them to
-         reproduce the same choreography. Swap hero-bridge.jpg for the actual
-         Figma export later for a pixel-perfect match. -->
-    <div class="hero-buildings" aria-hidden="true">
-      <img src="hero-building.webp" alt="">
-    </div>
+    <img class="hero-photo" src="hero-photo.webp" alt="ЖК «Жемчужина Керчи» — вид на дом и Крымский мост">
 
     <div class="hero-headline-wrap">
-      <p class="hero-eyebrow">Комплекс видовых квартир в городе Керчь</p>
       <h1 class="hero-headline"><span class="line-1">Жемчужина</span><span class="line-2">Керчи</span></h1>
-    </div>
-
-    <div class="container hero-bottom-row">
-      <div class="hero-ctas">
-        <button class="btn-pill-green" id="ctaHeroBtn" type="button">Выбрать квартиру</button>
-        <button class="btn-pill-glass" id="ctaSpecsBtn" type="button">Характеристики дома</button>
-      </div>
-      <p class="hero-caption">Ваш идеальный дом<br>у Чёрного моря</p>
+      <p class="hero-caption">Ваш идеальный дом у Чёрного моря</p>
     </div>
   </section>
 
 </main>
 
-<script src="script.js?v=6"></script>
+<!-- Fixed CTA bar — stays in the same spot on screen regardless of scroll,
+     per spec ("должны быть всегда в одном и том же месте даже при скролле").
+     Lives outside <main> as a direct <body> child so `position: fixed` is
+     always relative to the viewport. -->
+<div class="fixed-cta-bar">
+  <div class="hero-ctas">
+    <button class="btn-pill-green" id="ctaHeroBtn" type="button">Выбрать квартиру</button>
+    <button class="btn-pill-glass" id="ctaSpecsBtn" type="button">Характеристики дома</button>
+  </div>
+  <a class="phone-fab" href="tel:+79780520008" aria-label="Позвонить">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.61 21 3 13.39 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.58a1 1 0 0 1-.25 1.01l-2.2 2.2Z" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/>
+    </svg>
+  </a>
+</div>
+
+<script src="script.js?v=10"></script>
 </body>
 </html>

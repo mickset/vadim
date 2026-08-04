@@ -1,9 +1,11 @@
 /* =========================================================
-   SZ GRADIENT — "Жемчужина Керчи" hero (v5)
-   Rebuilt to match the Figma frames "1" / "2" / "1920" on Page 2. The
-   headline is "Жемчужина Керчи" (the marketing name); "СЗ Градиент" is only
-   the developer's small logo in the header — that's why the earlier giant
-   "Градиент" wordmark experiments live in the header now, not the hero.
+   SZ GRADIENT — "Жемчужина Керчи" hero (v6)
+   Rebuilt to match Figma frame "1920 new" (Page 2, node 1129:1121) —
+   a single static photo, no background/building animation, only the
+   headline fades/rises in. The headline is "Жемчужина Керчи" (the
+   marketing name); "СЗ Градиент" is only the developer's small logo in the
+   header — that's why the earlier giant "Градиент" wordmark experiments
+   live in the header now, not the hero.
    ========================================================= */
 
 :root {
@@ -27,7 +29,10 @@ html { scroll-behavior: smooth; }
 body { font-family: var(--font-body); background: var(--bg); color: var(--ink); line-height: 1.6; overflow-x: hidden; font-size: 16px; }
 img { max-width: 100%; display: block; }
 a { color: inherit; }
-button { font-family: inherit; }
+button {
+  font-family: inherit; appearance: none; -webkit-appearance: none;
+  border: none; background: none; outline: none; box-shadow: none;
+}
 
 .container { max-width: var(--container); margin: 0 auto; padding: 0 32px; position: relative; }
 
@@ -89,83 +94,98 @@ button { font-family: inherit; }
 }
 
 /* ---------- Hero ----------
-   Layering (back to front): sky/sea photo -> giant headline -> foreground
-   building render (rises to slightly overlap the bottom of "Керчи") ->
-   bottom row (CTAs + caption).
-   Each element's `transform`/`top` is only ever driven by ONE animation, so
-   entrance + later repositioning never fight each other on the same
-   property (that caused jitter in an earlier build). */
-.hero { position: relative; height: 100vh; min-height: 640px; overflow: hidden; background: #274056; }
+   Rebuilt from Figma frame "1920 new" (Page 2, node 1129:1121). Fully
+   static — no zoom, no parallax, no image animation of any kind; only the
+   headline block gets a soft fade+rise entrance, per spec. All measurements
+   below are figma_execute-verified against that frame (reference width
+   1920px).
 
-.hero-sky {
-  position: absolute; inset: 0; width: 100%; height: 100%;
-  background-image: url("hero-bridge.jpg");
-  background-size: cover; background-position: center 55%;
-  transform-origin: 60% 75%;
-  animation: heroBgZoom 1.6s var(--ease) forwards; animation-delay: 1s;
+   hero-photo.webp is "image 33", native 2198x1200, placed in the frame at
+   left:-275px top:0 width:2198px height:1200px — i.e. shown at native
+   scale, cropped only by a horizontal offset. As fractions of the frame's
+   own width (1920) that's left:-14.32vw width:114.48vw, and height (also
+   expressed via vw, not vh, so it can never desync from width and distort)
+   is 1200/1920*100 = 62.5vw. .hero's own height is locked to that same
+   62.5vw, so the photo exactly fills the section top-to-bottom with only
+   its left/right edges cropped — and because .hero's height is itself
+   derived from vw, any plain `%` used to position content inside it (the
+   headline) stays proportionally correct at any viewport width without
+   needing another vw hack. */
+.hero { position: relative; width: 100%; height: 62.5vw; overflow: hidden; background: #bcdcef; }
+.hero-photo {
+  position: absolute; left: -14.32vw; top: 0; width: 114.48vw; height: 62.5vw;
+  max-width: none; object-fit: cover;
 }
-@keyframes heroBgZoom { from { transform: scale(1); } to { transform: scale(1.32); } }
 
 .hero-headline-wrap {
-  position: absolute; top: 25.7%; left: 0; right: 0; z-index: 2; text-align: center; padding: 0 24px;
-  opacity: 0; transform: translateY(24px);
-  animation:
-    heroFadeIn .9s var(--ease) forwards,
-    heroHeadlineRise 1.4s var(--ease) forwards;
-  animation-delay: 0s, 1s;
+  /* Frame9 (headline + caption group): x 58.23%, y 16.08% of the 1920x1200
+     photo area, width 34.95%. itemSpacing 24px -> gap: 1.25vw. The group's
+     Figma DROP_SHADOW (0/4/100, 24% black) becomes a soft drop-shadow
+     filter for legibility over open sky. */
+  position: absolute; left: 58.23%; top: 16.08%; width: 34.95%; z-index: 2;
+  display: flex; flex-direction: column; gap: 1.25vw;
+  filter: drop-shadow(0 .2vw 3.5vw rgba(0,0,0,.28));
+  opacity: 0; transform: translateY(28px);
+  animation: heroFadeIn 1.1s var(--ease) forwards; animation-delay: .2s;
 }
 @keyframes heroFadeIn { to { opacity: 1; transform: translateY(0); } }
-@keyframes heroHeadlineRise { from { top: 25.7%; } to { top: 12.6%; } }
 
-.hero-eyebrow {
-  font-family: var(--font-body); font-weight: 800; font-size: clamp(11px, .83vw, 16px);
-  letter-spacing: .12em; text-transform: uppercase; color: #fff; margin-bottom: 16px;
-}
 .hero-headline {
-  font-family: var(--font-display); font-weight: 500; font-size: clamp(42px, 6.25vw, 120px);
-  line-height: .95; text-transform: uppercase; letter-spacing: 0;
+  font-family: var(--font-display); font-weight: 500; text-transform: uppercase; letter-spacing: 0;
 }
-.hero-headline .line-1, .hero-headline .line-2 { display: block; }
-.hero-headline .line-1 { color: #fff; }
-.hero-headline .line-2 { color: #DDD7CB; }
+.hero-headline .line-1, .hero-headline .line-2 { display: block; line-height: .95; }
+/* Figma: "Жемчужина" 72px white; "Керчи" 96px (bigger — the emphasis word)
+   #FFF8F0. Both scaled as vw off the 1920 reference, clamped for sanity. */
+.hero-headline .line-1 { color: #fff; font-size: clamp(28px, 3.75vw, 72px); }
+.hero-headline .line-2 { color: #FFF8F0; font-size: clamp(36px, 5vw, 96px); }
 
-.hero-buildings {
-  position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: center; align-items: flex-end;
-  z-index: 3; pointer-events: none; line-height: 0;
-  opacity: 0; transform: translateY(50px) scale(.94);
-  animation: heroBuildingsCatchUp 1.8s var(--ease) forwards; animation-delay: 1.2s;
+.hero-caption {
+  font-family: var(--font-body); font-weight: 600; color: #fff;
+  font-size: clamp(15px, 1.77vw, 34px); line-height: 1.1;
 }
-/* Sized by HEIGHT (not width) — the building must only occupy the bottom
-   portion of the hero and just graze "Керчи", not swallow the whole
-   headline. Sizing by width alone (as the previous version did) let a tall
-   source photo balloon to fill almost the entire viewport height. */
-.hero-buildings img { display: block; width: auto; height: min(56vh, 620px); max-width: 92vw; object-fit: contain; }
-@keyframes heroBuildingsCatchUp { to { opacity: 1; transform: translateY(0) scale(1); } }
 
-.hero-bottom-row {
-  position: absolute; left: 0; right: 0; bottom: 64px; z-index: 4;
-  display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap;
-  opacity: 0; transform: translateY(18px);
-  animation: heroFadeIn .9s var(--ease) forwards; animation-delay: 3s;
+/* ---------- Fixed CTA bar ----------
+   "должны быть всегда в одном и том же месте даже при скролле" — a plain
+   `position: fixed` bar living outside <main>, so it never scrolls with the
+   hero. Offsets match the Figma gap between the CTAs/phone pill and the
+   bottom of the photo (5.94vw / 3.13vw margins), clamped so it stays sane
+   on very small/very large screens. No entrance animation — it's meant to
+   just always be there. */
+.fixed-cta-bar {
+  position: fixed; left: 0; right: 0; bottom: clamp(20px, 5.94vw, 90px); z-index: 500;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 clamp(20px, 3.13vw, 60px); pointer-events: none;
 }
+.fixed-cta-bar > * { pointer-events: auto; }
 .hero-ctas { display: flex; gap: 20px; flex-wrap: wrap; }
-.btn-pill-green, .btn-pill-glass {
+/* Figma: both pills (Frame 3 = green, Frame 4 = glass) and the phone circle
+   are the exact same height (54px/68px, padding 16px/32px) with a "GLASS"
+   (frosted/blur) effect and NO stroke — any visible outline in the browser
+   was native <button> chrome peeking through the semi-transparent glass
+   fill, reset globally above (appearance:none etc.), not part of the
+   design. */
+.btn-pill-green, .btn-pill-glass, .phone-fab {
   display: inline-flex; align-items: center; justify-content: center; white-space: nowrap;
-  padding: 16px 32px; border-radius: 999px; border: none; cursor: pointer; font-family: inherit;
-  font-weight: 700; font-size: clamp(13px, 1.04vw, 20px); letter-spacing: .02em; text-transform: uppercase;
+  border-radius: 999px; cursor: pointer; font-family: inherit;
   color: #fff; transition: background .25s ease;
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+}
+.btn-pill-green, .btn-pill-glass {
+  padding: 16px 32px; font-weight: 700; font-size: clamp(13px, 1.04vw, 20px);
+  letter-spacing: .02em; text-transform: uppercase;
 }
 .btn-pill-green { background: rgba(2,184,79,.6); }
 .btn-pill-green:hover { background: rgba(2,184,79,.8); }
 .btn-pill-glass { background: rgba(255,255,255,.12); }
 .btn-pill-glass:hover { background: rgba(255,255,255,.2); }
+.phone-fab { width: 68px; height: 68px; background: rgba(2,184,79,.6); text-decoration: none; }
+.phone-fab:hover { background: rgba(2,184,79,.8); }
 
-.hero-caption {
-  font-family: var(--font-body); font-weight: 600; font-size: clamp(18px, 2.19vw, 42px);
-  line-height: 1.1; color: #fff; text-align: right; text-shadow: 0 2px 14px rgba(0,0,0,.35);
-}
-
-@media (max-width: 768px) {
-  .hero-bottom-row { flex-direction: column; align-items: flex-start; bottom: 40px; }
-  .hero-caption { text-align: left; }
+@media (max-width: 900px) {
+  .hero { height: auto; min-height: 100vh; }
+  .hero-photo { position: absolute; left: 50%; top: 0; width: auto; height: 100%; transform: translateX(-50%); }
+  .hero-headline-wrap { left: 24px; right: 24px; width: auto; top: auto; bottom: 140px; }
+  .fixed-cta-bar { flex-direction: column; align-items: stretch; gap: 12px; bottom: 16px; }
+  .fixed-cta-bar .hero-ctas { justify-content: center; }
+  .fixed-cta-bar .phone-fab { display: none; }
 }
