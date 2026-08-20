@@ -1,8 +1,12 @@
 name: Uptime check
 
+# Paused: aphrodite-bay is temporarily on hold, so the scheduled check is
+# disabled to stop the "недоступен" Telegram alerts. Uncomment the
+# `schedule` block below to resume automatic checks. `workflow_dispatch`
+# still works for a manual one-off check in the meantime.
 on:
-  schedule:
-    - cron: '*/10 * * * *'
+  # schedule:
+  #   - cron: '*/10 * * * *'
   workflow_dispatch:
 
 jobs:
