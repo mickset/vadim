@@ -165,10 +165,18 @@ h2.light { color: #fff; }
   font-size: 11.5px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase;
   color: #fff; margin-bottom: 26px; border-radius: 2px;
 }
+/* Two explicit lines, each forced to stay on one line (`white-space:
+   nowrap`) instead of relying on the column's max-width to wrap it —
+   at large viewport widths + this font size, each half of the phrase is
+   wider than the 760px column, so it was wrapping into 4 lines instead of
+   the intended 2. The h1 itself isn't width-constrained (only its parent
+   .hero-content is, and max-width doesn't clip children), so it's free to
+   extend past that column into the empty sky/photo area. */
 .hero-content h1 {
   font-size: clamp(36px, 5.2vw, 76px); font-weight: 500; line-height: 1.08; letter-spacing: -.02em;
   text-transform: uppercase; color: #fff; margin-bottom: 26px;
 }
+.hero-content h1 .line { display: block; white-space: nowrap; }
 .hero-content p { font-size: 18px; color: rgba(255,255,255,.85); max-width: 480px; margin-bottom: 38px; }
 .hero-actions { display: flex; align-items: center; gap: 30px; flex-wrap: wrap; }
 
@@ -470,4 +478,8 @@ h2.light { color: #fff; }
   .plans-grid { grid-template-columns: 1fr; }
   .tower-marker { width: 34px; height: 40px; font-size: 11px; }
   .tower-popover { min-width: 200px; padding: 18px 20px; }
+  /* At phone widths the font-size clamp bottoms out at 36px but the phrase
+     is still too wide to fit `nowrap` without horizontal overflow — let it
+     wrap naturally there instead. */
+  .hero-content h1 .line { white-space: normal; }
 }
