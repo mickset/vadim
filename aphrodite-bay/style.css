@@ -159,7 +159,13 @@ h2.light { color: #fff; }
 /* Their headline column is well short of full container width (~55% of the
    viewport) so a short phrase wraps into two deliberate lines instead of
    stretching edge-to-edge — max-width here reproduces that same wrap point. */
-.hero-content { position: relative; z-index: 1; padding-bottom: 9vh; max-width: 760px; }
+/* .hero-content inherits .container's margin:0 auto, but since its own
+   max-width (760px) is narrower than the header's .container (1240px),
+   auto-centering would put its left edge ~240px right of the header's —
+   text ends up starting well right of the burger icon. Pin the left edge
+   to the same box-left as the 1240px container instead of centering, so
+   the headline lines up with the burger at every viewport width. */
+.hero-content { position: relative; z-index: 1; padding-bottom: 9vh; max-width: 760px; margin-left: max(0px, calc((100vw - 1240px) / 2)); margin-right: auto; }
 .hero-content .tag {
   display: inline-block; padding: 8px 16px; border: 1px solid rgba(255,255,255,.5);
   font-size: 11.5px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase;
